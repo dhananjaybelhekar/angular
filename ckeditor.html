@@ -1,0 +1,76 @@
+<html ng-app="todoApp">
+	<head>
+	     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.3/ckeditor.js"></script>
+		<script>
+		angular.module('todoApp', [])
+		.directive('ckEditor', function() {
+  return {
+    require: '?ngModel',
+    link: function(scope, elm, attr, ngModel) {
+      var ck = CKEDITOR.replace(elm[0]);
+
+      if (!ngModel) return;
+
+      ck.on('instanceReady', function() {
+        ck.setData(ngModel.$viewValue);
+      });
+
+      function updateModel() {
+          scope.$apply(function() {
+              ngModel.$setViewValue(ck.getData());
+          });
+      }
+        
+      ck.on('change', updateModel);
+      ck.on('key', updateModel);
+      ck.on('dataReady', updateModel);
+
+      ngModel.$render = function(value) {
+        ck.setData(ngModel.$viewValue);
+      };
+    }
+  };
+}).factory('Data', function(){
+	return {root_path:'http://site.com/index.php/'};
+})
+  .controller('TodoListController', function($scope, $http, Data) {
+    $scope.savePage = function(entry) {
+            console.log(entry);
+            $http.post(Data.root_path + 'api/v1/pages', entry).
+            success(function(data, status, headers, config) {
+                console.log(data);
+            }).
+            error(function(data, status, headers, config) {
+                console.log(data);
+            });
+    };
+})
+  
+  
+		</script>
+	</head>
+	<body ng-controller="TodoListController">
+	<script>
+	CKEDITOR.editorConfig = function (config) {
+    config.language = 'es';
+    config.uiColor = '#F7B42C';
+    config.height = 300;
+    config.toolbarCanCollapse = false;
+	};
+	CKEDITOR.replace('editor8');
+</script>
+
+     <form class="form-horizontal" role="form" ng-submit="savePage(entry)">
+       <!-- Body -->
+       <div class="form-group">
+         <div class="col-lg-8">
+            <textarea ck-editor="" ng-model="entry.body" class="form-control" id="body-editor" value="{{entry.body}}">{{entry.body}}</textarea>
+                              
+         </div>
+           {{entry.body}}
+       </div>
+	</form>
+
+</body>
+</html>

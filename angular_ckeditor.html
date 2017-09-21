@@ -1,0 +1,81 @@
+<html>
+<head>
+<script src="http://cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+
+<script>
+var cmsPlus = angular.module('cmsPlus', []);
+
+cmsPlus.directive('ckEditor', function() {
+  return {
+    require: '?ngModel',
+    link: function(scope, elm, attr, ngModel) {
+      var ck = CKEDITOR.replace(elm[0]);
+
+      if (!ngModel) return;
+
+      ck.on('instanceReady', function() {
+        ck.setData(ngModel.$viewValue);
+      });
+
+      function updateModel() {
+          scope.$apply(function() {
+              ngModel.$setViewValue(ck.getData());
+          });
+      }
+        
+      ck.on('change', updateModel);
+      ck.on('key', updateModel);
+      ck.on('dataReady', updateModel);
+
+      ngModel.$render = function(value) {
+        ck.setData(ngModel.$viewValue);
+      };
+    }
+  };
+});
+
+// Data Service
+cmsPlus.factory('Data', function(){
+	return {root_path:'http://site.com/index.php/'};
+});
+
+/*
+|--------------------------------------------------------
+| Page Controller
+|--------------------------------------------------------
+*/
+cmsPlus.controller('pageCtrl',pageCtrl);
+function pageCtrl($scope, $http, Data) {
+    $scope.savePage = function(entry) {
+            console.log(entry);
+            $http.post(Data.root_path + 'api/v1/pages', entry).
+            success(function(data, status, headers, config) {
+                console.log(data);
+            }).
+            error(function(data, status, headers, config) {
+                console.log(data);
+            });
+    };
+} // End pageCtrl
+
+</script>
+</head>
+<body ng-app="cmsPlus">
+	<div  ng-controller="pageCtrl" >
+     <form class="form-horizontal" role="form" ng-submit="savePage(entry)">
+       <!-- Body -->
+       <div class="form-group">
+         <label class="col-lg-2 control-label">Body</label>
+         <div class="col-lg-8">
+            <textarea ck-editor="" ng-model="entry.body" class="form-control" id="body-editor" value="{{entry.body}}">{{entry.body}}</textarea>
+                              
+         </div>
+           {{entry.body}}
+       </div>
+       <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-primary">Save</button>
+             </div>
+</body>
+</html>
