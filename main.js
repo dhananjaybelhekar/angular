@@ -1,10 +1,12 @@
 var SHA256 = require("crypto-js/sha256");
 class main
 {
-	show(){
-		console.log("call show");
-		console.log(SHA256("Message").toString());
+	show(data){
+		return SHA256(JSON.stringify(data)).toString();
+
 	}
 }
 let a= new main();
-a.show();
+let b= a.show({phash:null,msg:"hii"});
+console.log(b);
+
