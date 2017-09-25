@@ -38,13 +38,7 @@
   .controller('TodoListController', function($scope, $http, Data) {
     $scope.savePage = function(entry) {
             console.log(entry);
-            $http.post(Data.root_path + 'api/v1/pages', entry).
-            success(function(data, status, headers, config) {
-                console.log(data);
-            }).
-            error(function(data, status, headers, config) {
-                console.log(data);
-            });
+           
     };
 })
   
@@ -71,6 +65,7 @@
          </div>
            {{entry.body}}
        </div>
+<button ng-click="savePage()">g4d54gdf5g456</button>
 	</form>
 
 </body>
