@@ -1,0 +1,48 @@
+<!doctype html>
+<html ng-app="todoApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.6/angular-resource.min.js"></script>
+    <script>
+	angular.module('todoApp', ['ngResource'])
+.directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.fileread = loadEvent.target.result;
+                    });
+                }
+                reader.readAsDataURL(changeEvent.target.files[0]);
+            });
+        }
+    }
+}])
+  .controller('TodoListController', function($resource) {
+    var todoList = this;
+	
+	todoList.show=function(data){
+	console.log("show call");
+	//$resource(url, [paramDefaults], [actions], options);
+	var x=$resource("http://localhost:3000/fileupload",{}, {'save':   {method:'POST'}});
+	x.save({img:data});
+	}
+	
+  });
+  </script>
+    
+  </head>
+  <body>
+    <h2>Todo</h2>
+    <div ng-controller="TodoListController as todoList">
+      <input type="file" name="advertiseFile" fileread="horrizontalAdvertise.sectionImage" required />
+      <button ng-click="todoList.show( horrizontalAdvertise.sectionImage)">show</button>
+      <img ng-src="{{ horrizontalAdvertise.sectionImage }}" class="img-responsive img-thumbnail img-triangle" alt="Advertise Image" image-Resizing image-Height="90px" image-Width="728px">
+    </div>
+  </body>
+</html>
