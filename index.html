@@ -1,8 +1,8 @@
 <html ng-app="todoApp">
 	<head>
 	     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
-		<script src="https://ckeditor.com/themes/ckeditor4/vendor/ckeditor/4.7.3/ckeditor.js?ow7yye"></script>
-		<script src="https://ckeditor.com/themes/ckeditor4/vendor/ckeditor/4.7.3/ckeditor.js?ow7yye"></script>
+
+		<script src="https://cdn.ckeditor.com/4.7.3/full-all/ckeditor.js"></script>
 		<script>
 		angular.module('todoApp', [])
 		.directive('ckEditor', function() {
@@ -36,6 +36,7 @@
 	return {root_path:'http://site.com/index.php/'};
 })
   .controller('TodoListController', function($scope, $http, Data) {
+$scope.entry={body2 :"<h1>dsasfd as d</h1> <ul> <li>df</li> <li>dsf</li> <li>sd</li> <li>d</li> <li>s</li> </ul>"};
     $scope.savePage = function(entry) {
             console.log(entry);
             $http.post(Data.root_path + 'api/v1/pages', entry).
@@ -53,11 +54,11 @@
 	</head>
 	<body ng-controller="TodoListController">
 	<script>
-	CKEDITOR.editorConfig = function (config) {
-    config.language = 'es';
-    config.uiColor = '#F7B42C';
-    config.height = 300;
-    config.toolbarCanCollapse = false;
+		CKEDITOR.editorConfig = function (config) {
+		    config.language = 'es';
+		    config.uiColor = '#F7B42C';
+		    config.height = 700;
+		    config.toolbarCanCollapse = false;
 	};
 	CKEDITOR.replace('editor8');
 </script>
@@ -66,10 +67,11 @@
        <!-- Body -->
        <div class="form-group">
          <div class="col-lg-8">
-            <textarea ck-editor="" ng-model="entry.body" class="form-control" id="body-editor" value="{{entry.body}}">{{entry.body}}</textarea>
-                              
+            <textarea ck-editor="dfdf" ng-model="entry.body" class="form-control" id="body-editor" value="{{entry.body}}">{{entry.body}}</textarea>
+                         <textarea ck-editor="dfdf" ng-model="entry.body2" class="form-control" id="body-editor" value="{{entry.body}}">{{entry.body2}}</textarea>     
          </div>
            {{entry.body}}
+           {{entry.body2}}
        </div>
 	</form>
 
