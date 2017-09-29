@@ -7,11 +7,8 @@ class block
 		this.data = data;
 		this.phash = phash;
 		this.hash=this.show();
-
-
 	}
 	show(){
-		//return SHA256(JSON.stringify(this)).toString();
 		return SHA256(this.index+this.data+this.phash).toString();
 
 	}
