@@ -40,8 +40,13 @@ var imageName = d + '.' + text + '.png';
 var data = req.body.img.replace(/^data:image\/\w+;base64,/, "");
 
 var buf = new Buffer(data, 'base64');
-fs.writeFile(imageName, buf);
-res.send(imageName);
+// fs.writeFile('../ss/'+imageName, buf);
+// res.send(imageName);
+fs.writeFile(imageName, buf, function (err) {
+    if (err) 
+        return res.send(err);
+    res.send(imageName);
+});
 
 });
 app.listen(3000, function () {
