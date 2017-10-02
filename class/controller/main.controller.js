@@ -6,7 +6,7 @@ class MainController
 	{
     	  var str = new Date().toString(); 
           obj.catSchema().create({ name: str }, function (err, small) {
-            if (err) return res.send(err)
+            if (err) return res.status(404).end();//res.send(err)
                 res.send(small);
           })
 	}
