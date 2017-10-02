@@ -13,4 +13,5 @@ class Main
         return this.bat;    
     }
 }
+
 module.exports  = new Main();
