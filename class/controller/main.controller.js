@@ -6,10 +6,11 @@ class MainController
 	{
 		console.log(req.query);
 		console.log(req.body);
-		console.log(req.params);	console.log(path);
+		console.log(req.params);	
+    console.log(path);
 
     	  var str = new Date().toString(); 
-          obj.catSchema()[path.split('/')[3]](req.query, function (err, small) {
+          obj.catSchema()[path.split('/')[2]](obj.qr(req.query), function (err, small) {
             if (err) return res.status(404).end();//res.send(err)
                 res.send(small);
           })
@@ -17,10 +18,20 @@ class MainController
 	post(req, res,path)
 	{
     	  var str = new Date().toString(); 
-         obj.catSchema()[path.split('/')[3]](req.body, function (err, small) {
+         obj.catSchema()[path.split('/')[2]]( obj.qr(req.body), function (err, small) {
             if (err) return res.status(404).end();//res.send(err)
                 res.send(small);
           })
 	}
+  put(req, res,path){   
+    var conditions = obj.qr(req.query)
+  , update = obj.qr(req.body)
+  , options = { multi: true };
+
+    obj.catSchema()[path.split('/')[2]](conditions, update, options, function (err, small) {
+            if (err) return res.status(404).end();//res.send(err)
+                res.send(small);
+          })
+  }
 }
 module.exports = new MainController();

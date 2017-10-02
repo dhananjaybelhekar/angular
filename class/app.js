@@ -15,12 +15,17 @@ app.use('/api',function(req,res){
 	if(req.method == 'GET')
 	{
 		console.log("get")
-	require("./controller/"+req.path.split('/')[1]+".controller.js")[req.path.split('/')[2]](req,res,req.path);
+	require("./controller/"+req.path.split('/')[1]+".controller.js")['get'](req,res,req.path);
 	}
 	if(req.method == 'POST')
 	{
 		console.log("post")
-	require("./controller/"+req.path.split('/')[1]+".controller.js")[req.path.split('/')[2]](req,res,req.path);
+	require("./controller/"+req.path.split('/')[1]+".controller.js")['post'](req,res,req.path);
+	}
+	if(req.method == 'PUT')
+	{
+		console.log("put")
+	require("./controller/"+req.path.split('/')[1]+".controller.js")['put'](req,res,req.path);
 	}
 })
 app.listen(3000, function () {
