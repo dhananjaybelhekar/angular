@@ -5,10 +5,6 @@ class BatController
 
 	get(req, res ,path)
 	{
-		console.log(req.query);
-		console.log(req.body);
-		console.log(req.params);	console.log(path);
-
     	  var str = new Date().toString(); 
           obj.batSchema()[path.split('/')[3]](req.query, function (err, small) {
             if (err) return res.status(404).end();//res.send(err)
@@ -16,7 +12,7 @@ class BatController
           })
 	}
 	post(req, res,path)
-	{
+	{ 
     	  var str = new Date().toString(); 
          obj.batSchema()[path.split('/')[3]](req.body, function (err, small) {
             if (err) return res.status(404).end();//res.send(err)
@@ -25,3 +21,8 @@ class BatController
 	}
 }
 module.exports = new BatController();
+
+    //console.log("req.query",req.query);
+    // console.log("req.body",req.body);
+    // console.log("req.params",req.params);  
+    // console.log("path",path);

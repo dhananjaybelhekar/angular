@@ -23,7 +23,7 @@ class Main
                 object[key] = this.qr(object[key]);
             }
         } else switch (object['_eval']) {
-            case 'Id':
+            case '_id':
                 {
                     object = mongoose.Types.ObjectId(object['value']);
                     break;

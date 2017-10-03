@@ -14,49 +14,59 @@ db.txn_organizations.aggregate(
 
     // Stage 2
     {
-      $unwind: "$ocdContact"
+      $sort: { 
+      "orgIdNumber":1
+      }
     },
 
     // Stage 3
     {
-      $unwind: "$ocdContact.contactType"
-    },
-
-    // Stage 4
-    {
-      $lookup: {
-               "from" : "mst_refcodevalues",
-                "localField" : "ocdContact.contactType",
-                "foreignField" : "_id",
-                "as" : "ocdContact.contactType"
+      $lookup: { 
+          "from" : "txn_organizations", 
+          "localField" : "parentId", 
+          "foreignField" : "_id", 
+          "as" : "parentId"
       }
     },
-
+    // Stage 4
+    {
+      $unwind: "$parentId"
+    },
     // Stage 5
+    {
+      $unwind: "$ocdContact"
+    },
+    // Stage 6
     {
       $unwind: "$ocdContact.contactType"
     },
-
-    // Stage 6
-    {
-      $sort: {
-       "orgIdNumber":1
-       }
-    },
-
     // Stage 7
     {
-      $project: {
-        "abbrevationName":1,
-            "classificationCodeName":1,
-            "orgIdNumber":1,
-            "name":1,
-            "ocdContact.contactType.description":1,
-            "ocdContact.sequenceNo":1,
-            "ocdContact.contactDetails":1,
-            "ocdContact.extension":1,
-            "ocdContact.note":1,
-            "parentId":1
+      $lookup: { 
+          "from" : "mst_refcodevalues", 
+          "localField" : "ocdContact.contactType", 
+          "foreignField" : "_id", 
+          "as" : "ocdContact.contactType"
+      }
+    },
+    // Stage 8
+    {
+      $unwind: "$ocdContact.contactType"
+    },
+    // Stage 9
+    {
+      $project: { 
+          "abbrevationName" : 1, 
+          "classificationCodeName" : 1, 
+          "orgIdNumber" : 1, 
+          "name" : 1, 
+          "ocdContact.contactType.description" : 1, 
+          "ocdContact.sequenceNo" : 1, 
+          "ocdContact.contactDetails" : 1, 
+          "ocdContact.extension" : 1, 
+          "ocdContact.note" : 1, 
+          "parentId.orgIdNumber" : 1, 
+          "parentId.name" : 1
       }
     }
   ],

@@ -14,10 +14,17 @@ db.txn_organizations.aggregate(
 
     // Stage 2
     {
-      $unwind: "$personnel"
+      $sort: { 
+          "orgIdNumber" : 1
+      }
     },
 
     // Stage 3
+    {
+      $unwind: "$personnel"
+    },
+
+    // Stage 4
     {
       $lookup: { 
           "from" : "txn_personnels", 
@@ -27,38 +34,46 @@ db.txn_organizations.aggregate(
       }
     },
 
-    // Stage 4
+    // Stage 5
     {
       $unwind: "$personnel"
     },
 
-    // Stage 5
+    // Stage 6
     {
       $match: { 
-         "personnel.directoryId": ObjectId("57189cd924d8bc65f4123bc3"), 
-          "personnel.status": ObjectId("57283b4214dde6a43b46a7bb"), 
-          $or: [ 
-          { "personnel.died": null }, 
-          { "personnel.died.day": null }, 
-          { "personnel.died.month": null }, 
-          { "personnel.died.year": null } 
-          ] 
+          "personnel.directoryId" : ObjectId("57189cd924d8bc65f4123bc3"), 
+          "personnel.status" : ObjectId("57283b4214dde6a43b46a7bb"), 
+          "$or" : [
+              {
+                  "personnel.died" : null
+              }, 
+              {
+                  "personnel.died.day" : null
+              }, 
+              {
+                  "personnel.died.month" : null
+              }, 
+              {
+                  "personnel.died.year" : null
+              }
+          ]
       }
     },
 
-    // Stage 6
+    // Stage 7
     {
       $unwind: "$personnel.assignment"
     },
 
-    // Stage 7
+    // Stage 8
     {
       $match: { 
           "personnel.assignment.status" : ObjectId("57283b4214dde6a43b46a7bb")
       }
     },
 
-    // Stage 8
+    // Stage 9
     {
       $lookup: { 
           "from" : "txn_organizations", 
@@ -68,12 +83,12 @@ db.txn_organizations.aggregate(
       }
     },
 
-    // Stage 9
+    // Stage 10
     {
       $unwind: "$personnel.assignment.orgId"
     },
 
-    // Stage 10
+    // Stage 11
     {
       $lookup: { 
           "from" : "mst_refcodevalues", 
@@ -83,12 +98,12 @@ db.txn_organizations.aggregate(
       }
     },
 
-    // Stage 11
+    // Stage 12
     {
       $unwind: "$personnel.personType"
     },
 
-    // Stage 12
+    // Stage 13
     {
       $lookup: { 
           "from" : "txn_organizations", 
@@ -98,12 +113,12 @@ db.txn_organizations.aggregate(
       }
     },
 
-    // Stage 13
+    // Stage 14
     {
       $unwind: "$personnel.assignment.orgId.parentId"
     },
 
-    // Stage 14
+    // Stage 15
     {
       $project: { 
           "abbrevationName" : 1, 
@@ -129,9 +144,23 @@ db.txn_organizations.aggregate(
           "personnel.ordination.ordination_year" : 1, 
           "personnel.homeDiocese" : 1, 
           "personnel.homeNation" : 1, 
-          "personnel.assignment.orgId.orgIdNumber":1,
+          "personnel.assignment.orgId.orgIdNumber" : 1, 
           "personnel.assignment.orgId.parentId.orgIdNumber" : 1, 
-          "personnel.assignment.orgId.parentId.name" : 1
+          "personnel.assignment.orgId.parentId.name" : 1, 
+          "personnel.died" : 1, 
+          "cmp" : {
+              "$cmp" : [
+                  "$orgIdNumber", 
+                  "$personnel.assignment.orgId.orgIdNumber"
+              ]
+          }
+      }
+    },
+
+    // Stage 16
+    {
+      $match: {
+      "cmp":NumberInt(0)
       }
     }
   ],
@@ -147,10 +176,4 @@ db.txn_organizations.aggregate(
 
   // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
 
-).forEach(function(data){
-  delete data._id;
-  if(data.orgIdNumber == personnel.assignment.orgId.orgIdNumber)
-  {
-    db.ocdper_ass_orgs.save(data);   
-  }
-});
+);
