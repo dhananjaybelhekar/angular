@@ -120,6 +120,13 @@ db.txn_organizations.aggregate(
 
     // Stage 15
     {
+      $match: {
+      "personnel.assignment.orgId.classificationCode": { $nin: [ObjectId("57726c33c19c305dc5b1b36c"),ObjectId("57726c33c19c305dc5b1b34f")] }
+      }
+    },
+
+    // Stage 16
+    {
       $project: { 
           "abbrevationName" : 1, 
           "classificationCodeName" : 1, 
@@ -145,6 +152,7 @@ db.txn_organizations.aggregate(
           "personnel.homeDiocese" : 1, 
           "personnel.homeNation" : 1, 
           "personnel.assignment.orgId.orgIdNumber" : 1, 
+          "personnel.assignment.orgId.name" : 1, 
           "personnel.assignment.orgId.parentId.orgIdNumber" : 1, 
           "personnel.assignment.orgId.parentId.name" : 1, 
           "personnel.died" : 1, 
@@ -157,10 +165,10 @@ db.txn_organizations.aggregate(
       }
     },
 
-    // Stage 16
+    // Stage 17
     {
-      $match: {
-      "cmp":NumberInt(0)
+      $match: { 
+          "cmp" : 0
       }
     }
   ],
