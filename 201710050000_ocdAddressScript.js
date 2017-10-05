@@ -56,7 +56,7 @@ db.txn_organizations.aggregate(
 	{
 	  data.classificationCode=db.mst_refcodevalues.findOne({_id:data.classificationCode});
 	}
-	if(address.addressType)
+	if(data.address.addressType)
 	{
 	    data.address.addressType=db.mst_refcodevalues.findOne({_id:data.address.addressType});
 	}
