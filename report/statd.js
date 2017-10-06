@@ -5,14 +5,7 @@ var json2csv = require('json2csv');
 var fs = require('fs');
 var async = require('async');
 
-var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
- 
-
-
-//mongoose.connect('mongodb://192.168.10.178/OCD_XML');
 mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
-//mongoose.connect('mongodb://192.168.10.121/tw-prod-20170928');
-
 
 
 //var temp = mongoose.model('temps',new mongoose.Schema({}, {strict: false}));
@@ -24,20 +17,10 @@ mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
 //     }
 // }));
 var mstValue = mongoose.model('MST_RefCodeValue',new mongoose.Schema({}));
-var orgScgema = new mongoose.Schema({
-  'parentId':{
-        "type": Schema.Types.ObjectId,
-        "ref": 'TXN_Organization'
-    }
-   // "classificationCode":{
-   //      "type": Schema.Types.ObjectId,
-   //      "ref": 'MST_RefCodeValue'
-   //  }
-});
-orgScgema.plugin(mongooseAggregatePaginate);
 
+var orgScgema = new mongoose.Schema({});
 
-var org1 = mongoose.model('TXN_Organization',orgScgema);
+var org1 = mongoose.model('statdbd',orgScgema);
 //Schema.Types.ObjectId()
 //db.ocdpersonnels.find({}).sort({orgIdNumber:1}).limit(100)
 function jsontoCsv(data)
@@ -57,139 +40,55 @@ function jsontoCsv(data)
 
 
 function fun1(callback){
- var aggregate=org1.aggregate(
-
-  // Pipeline
-  [
-    // Stage 1
-    {
-      $match: {
-       "directoryId": new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3"),
-         "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb")
-      }
-    },
-
-    // Stage 2
-    {
-      $unwind: "$address"
-    },
-
-    // Stage 3
-    {
-      $match: {
-      "address.deleted":{$in:[false,null]}
-      }
-    },
-
-    // Stage 4
-    {
-      $project: {
-      "status":1,
-      "orgIdNumber":1,
-      "classificationCode":1,
-      "name":1,
-      "address":1,
-      "parentId":1
-      }
-    }
-  ]
-
-  // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
-
-);
-var options = { page : 1, limit : 5000, allowDiskUse: true }
-org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
-  if(err) 
-  {
-    console.err(err)
-  }
-  else
-  { 
-    console.log(pageCount);
-  callback(null, results);
-  }
-}) 
-}
- 
-function fun2(data,callback){
-            //callback(null,data);
-  org1.populate(data, {path: 'parentId'}, function(err, populatedTransactions) {
-            // Your populated translactions are inside populatedTransactions
-            callback(null,populatedTransactions);
-  });
-}
-function fun3(data,callback){
-            //callback(null,data);
-  mstValue.populate(data, {path: 'status'}, function(err, populatedTransactions) {
-            // Your populated translactions are inside populatedTransactions
-            callback(null,populatedTransactions);
-  });
-}
-function fun4(data,callback){
-            //callback(null,data);
-  mstValue.populate(data, {path: 'classificationCode'}, function(err, populatedTransactions) {
-            // Your populated translactions are inside populatedTransactions
-            callback(null,populatedTransactions);
-  });
-}
-function fun5(data,callback){
-            //callback(null,data);
-  mstValue.populate(data, {path: 'address.addressType'}, function(err, populatedTransactions) {
-            // Your populated translactions are inside populatedTransactions
-            callback(null,populatedTransactions);
-  });
+org1.find({ "statistic.value": { $nin: [null,""] } }).sort('orgIdNumber').exec(function(err,data){
+   callback(null, data);
+})
 }
 
-async.waterfall([fun1,fun2,fun3,fun4,fun5], function (err, result) {
+async.waterfall([fun1], function (err, result) {
 
     var fields = [
     {
-      label: 'status.codeValue', 
+      label: 'orgIdNumber', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.status)).codeValue;
+        return JSON.parse(JSON.stringify(row)).orgIdNumber;
       },
       default: 'NULL',
       stringify: true 
-    },'orgIdNumber','name',
-    {
-      label: 'classificationCode.codeValue', 
+    },{
+      label: 'classificationCode', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.classificationCode)).codeValue;
-      },
-      default: 'NULL',
-      stringify: true 
-    },
-    'address.sequenceNo',
-    {
-      label: 'address.addressType', 
-      value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.address.addressType)).codeValue;
+        return JSON.parse(JSON.stringify(row))['classificationCode.codeValue'];
       },
       default: 'NULL',
       stringify: true 
     },
-    'address.mailingIndex',
-    'address.header',
-    'address.organizationName',
-    'address.street1',
-    'address.street2',
-    'address.city',
-    'address.state',
-    'address.zip',
-    'address.country',
-    'dioProvince',
     {
-      label: 'parentId', 
+      label: 'name', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.parentId)).name;
+        return JSON.parse(JSON.stringify(row)).name;
       },
       default: 'NULL',
       stringify: true 
     }
+
+    // 'classificationCode.description',
+    // 'name',
+    // 'abbrevationName',
+    // 'statistic.statisticType.level',
+    // 'statistic.sequenceNo',
+    // 'statistic.statisticType.sequenceNo',
+    // 'statistic.statisticType.description',
+    // 'statistic.statisticTypeName',
+    // 'statistic.text',
+    // 'statistic.value',
+    // 'parentId.orgIdNumber',
+    // 'parentId.name',
+    // 'parentId.classificationCode.codeValue'
     ];
     var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
-  fs.appendFile('file2.csv', csv, function(err) {
+  fs.writeFile('statdio.csv', csv, function(err) {
   
         if (err) throw err;
         console.log('file saved');

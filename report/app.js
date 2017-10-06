@@ -97,7 +97,7 @@ function fun1(callback){
   // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
 
 );
-var options = { page : 1, limit : 5000, allowDiskUse: true }
+var options = { page : 2, limit : 5000, allowDiskUse: true }
 org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
   if(err) 
   {
@@ -139,9 +139,30 @@ function fun5(data,callback){
             callback(null,populatedTransactions);
   });
 }
+function fun6(data,callback){
+            //callback(null,data);
+  mstValue.populate(data, {path: 'address.country'}, function(err, populatedTransactions) {
+            // Your populated translactions are inside populatedTransactions
+            callback(null,populatedTransactions);
+  });
+}
+function fun7(data,callback){
+            //callback(null,data);
+  mstValue.populate(data, {path: 'address.city'}, function(err, populatedTransactions) {
+            // Your populated translactions are inside populatedTransactions
+            callback(null,populatedTransactions);
+  });
+}
+function fun8(data,callback){
+            //callback(null,data);
+  mstValue.populate(data, {path: 'address.state'}, function(err, populatedTransactions) {
+            // Your populated translactions are inside populatedTransactions
+            callback(null,populatedTransactions);
+  });
+}
 
-async.waterfall([fun1,fun2,fun3,fun4,fun5], function (err, result) {
-
+function result(err, result) {
+  console.log(result[0]);
     var fields = [
     {
       label: 'status.codeValue', 
@@ -173,115 +194,74 @@ async.waterfall([fun1,fun2,fun3,fun4,fun5], function (err, result) {
     'address.organizationName',
     'address.street1',
     'address.street2',
-    'address.city',
-    'address.state',
+    //'address.city',
+    {
+      label: 'city', 
+      value: function(row, field, data) {
+        var data =JSON.parse(JSON.stringify(row));
+            return (data.address.city) && (data.address.city.codeValue) ?(data.address.city.codeValue):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
+   // 'address.state',
+   {
+      label: 'state', 
+      value: function(row, field, data) {
+        var data =JSON.parse(JSON.stringify(row));
+            return (data.address.state) && (data.address.state.codeValue) ?(data.address.state.codeValue):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
     'address.zip',
-    'address.country',
+    //'address.country',
+    {
+      label: 'dfdsfds', 
+      value: function(row, field, data) {
+        var _data =JSON.parse(JSON.stringify(row));
+            return (_data.address.country) && (_data.address.country.codeValue) ?(_data.address.country.codeValue):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
     'dioProvince',
+    {
+      label: 'orgIdNumber', 
+      value: function(row, field, data) {
+        var _data =JSON.parse(JSON.stringify(row));
+        return (_data.parentId) && (_data.parentId.orgIdNumber) ?(_data.parentId.orgIdNumber):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
+    {
+      label: 'parent classificationCodeName', 
+      value: function(row, field, data) {
+        var _data =JSON.parse(JSON.stringify(row));
+        return (_data.parentId) && (_data.parentId.classificationCodeName) ?(_data.parentId.classificationCodeName):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
     {
       label: 'parentId', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.parentId)).name;
+        var _data =JSON.parse(JSON.stringify(row));
+        return (_data.parentId) && (_data.parentId.name) ?(_data.parentId.name):"";
       },
       default: 'NULL',
       stringify: true 
     }
+
     ];
     var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
-  fs.appendFile('file2.csv', csv, function(err) {
-  
+//  fs.appendFile('file3.csv', csv, function(err) {
+     fs.writeFile('file3.csv', csv, function(err) {
         if (err) throw err;
         console.log('file saved');
       });
-});
+}
 
-
-
-//"directoryId": new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3")
-// org1.find({
-//    "_id" : new mongoose.Types.ObjectId("578db77ec19cc73dbcbd1970"), 
-//   "directoryId": new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3")
-// }).select({"address":0,"ocdContact":0,"statistic":0})
-// .populate('classificationCode')
-// .populate('parentId')
-// .exec(function(err,data){
-// 	console.log(JSON.stringify(data,null,4));
-//    // jsontoCsv(data);
-// });
-
-
-// async.waterfall([
-//     function(callback) {
-//       var qrDAta= org1.aggregate(
-//           [
-//             {
-//               $match: {
-//                "directoryId": new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3"),
-//                  "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb")
-//               }
-//             },
-//             {
-//               $unwind: "$address"
-//             },
-//             {
-//               $match: {
-//               "address.deleted":{$in:[false,null]}
-//               //"address.addressType":{$in:[null]}
-//               }
-//             }
-//           ]);
-// qrDAta.options = { allowDiskUse: true }; 
-//       qrDAta.exec(
-//           function(err,data){
-//             console.log(err);
-//             console.log(data);
-//              //org1.populate(data, {path: 'parentId'}, function(err, populatedTransactions) {
-//             // Your populated translactions are inside populatedTransactions
-//         //    callback(null,data)
-//         //});
-            
-//           });
-          
-        
-//     },
-//     function(fun1,callback) {
-          
-//           org1.populate(fun1, {path: 'status'}, function(err, populatedTransactions) {
-//             // Your populated translactions are inside populatedTransactions
-//             callback(null,populatedTransactions)
-//         });
-//      }
-//      ,
-//     function(fun1,callback) {
-          
-//           org1.populate(fun1, {path: 'address.addressType'}, function(err, populatedTransactions) {
-//             // Your populated translactions are inside populatedTransactions
-//             callback(null,populatedTransactions)
-//         });
-//     }
-// ], function (err, result) {
-//   console.log(JSON.stringify(result,null,4));
-    
-//     var fields = ['root','parentId.name','address.zip','address.addressType.codeValue'];
-//     var csv = json2csv({ data: result, fields: fields });
- 
-//       fs.writeFile('file.csv', csv, function(err) {
-//         if (err) throw err;
-//         console.log('file saved');
-//       });
-// });
-
-
-
-/*
-Story.
-  findOne({ title: 'Casino Royale' }).
-  populate('author').
-  exec(function (err, story) {
-    if (err) return handleError(err);
-    console.log('The author is %s', story.author.name);
-    // prints "The author is Ian Fleming"
-  });
-
-*/
+async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );
