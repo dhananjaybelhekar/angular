@@ -55,8 +55,8 @@ function jsontoCsv(data)
 
  }
 
-function fun1(callback,num=0){
-  console.log(num)
+function fun1(callback){
+  console.log("func1");
  var aggregate=org1.aggregate(
 
   // Pipeline
@@ -112,6 +112,7 @@ org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, cou
 }
  
 function fun2(data,callback){
+  console.log("func2");
             //callback(null,data);
   org1.populate(data, {path: 'parentId'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -119,6 +120,7 @@ function fun2(data,callback){
   });
 }
 function fun3(data,callback){
+  console.log("func3");
             //callback(null,data);
   mstValue.populate(data, {path: 'status'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -126,6 +128,7 @@ function fun3(data,callback){
   });
 }
 function fun4(data,callback){
+  console.log("func4");
             //callback(null,data);
   mstValue.populate(data, {path: 'classificationCode'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -133,6 +136,7 @@ function fun4(data,callback){
   });
 }
 function fun5(data,callback){
+  console.log("func5");
             //callback(null,data);
   mstValue.populate(data, {path: 'address.addressType'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -140,6 +144,7 @@ function fun5(data,callback){
   });
 }
 function fun6(data,callback){
+  console.log("func6");
             //callback(null,data);
   mstValue.populate(data, {path: 'address.country'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -147,6 +152,7 @@ function fun6(data,callback){
   });
 }
 function fun7(data,callback){
+  console.log("func7");
             //callback(null,data);
   mstValue.populate(data, {path: 'address.city'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -154,6 +160,7 @@ function fun7(data,callback){
   });
 }
 function fun8(data,callback){
+  console.log("func8");
             //callback(null,data);
   mstValue.populate(data, {path: 'address.state'}, function(err, populatedTransactions) {
             // Your populated translactions are inside populatedTransactions
@@ -162,7 +169,7 @@ function fun8(data,callback){
 }
 
 function result(err, result) {
-  console.log(result[0]);
+  console.log("result");
     var fields = [
     {
       label: 'status.codeValue', 
