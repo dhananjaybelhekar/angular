@@ -55,8 +55,8 @@ function jsontoCsv(data)
 
  }
 
-
-function fun1(callback){
+function fun1(callback,num=0){
+  console.log(num)
  var aggregate=org1.aggregate(
 
   // Pipeline
@@ -263,5 +263,6 @@ function result(err, result) {
         console.log('file saved');
       });
 }
+
 
 async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );
