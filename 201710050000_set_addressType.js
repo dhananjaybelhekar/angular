@@ -34,4 +34,10 @@ db.txn_organizations.aggregate(
 
   // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
 
-);
+).forEach(function(data){
+  if(data.address.addressType == null || data.address.addressType == undefined)
+  {
+   data.address= { addressType : ObjectId("59d5d1c760ce9bbfb2f7fc1f") }
+  }
+  for(var i=)
+})
