@@ -8,7 +8,7 @@ var async = require('async');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
  
 
-
+var count=1;
 //mongoose.connect('mongodb://192.168.10.178/OCD_XML');
 mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
 //mongoose.connect('mongodb://192.168.10.121/tw-prod-20170928');
@@ -71,6 +71,11 @@ function fun1(callback){
 
     // Stage 2
     {
+      $sort: {
+      "orgIdNumber":1
+      }
+    },
+    {
       $unwind: "$address"
     },
 
@@ -97,8 +102,10 @@ function fun1(callback){
   // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
 
 );
-var options = { page : 2, limit : 5000, allowDiskUse: true }
+ console.log("count_",count);
+var options = { page : count, limit : 5000, allowDiskUse: true }
 org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+  console.log("pageCount_",pageCount);
   if(err) 
   {
     console.err(err)
@@ -174,7 +181,9 @@ function result(err, result) {
     {
       label: 'status.codeValue', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.status)).codeValue;
+          var _data =JSON.parse(JSON.stringify(row));
+          return ((_data.status) && (_data.status.codeValue)) ?(_data.status.codeValue):"";
+        //return JSON.parse(JSON.stringify(row.status)).codeValue;
       },
       default: 'NULL',
       stringify: true 
@@ -182,7 +191,9 @@ function result(err, result) {
     {
       label: 'classificationCode.codeValue', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.classificationCode)).codeValue;
+        //return JSON.parse(JSON.stringify(row.classificationCode)).codeValue;
+          var _data =JSON.parse(JSON.stringify(row));
+          return ((_data.classificationCode) && (_data.classificationCode.codeValue)) ?(_data.classificationCode.codeValue):"";
       },
       default: 'NULL',
       stringify: true 
@@ -191,7 +202,9 @@ function result(err, result) {
     {
       label: 'address.addressType', 
       value: function(row, field, data) {
-        return JSON.parse(JSON.stringify(row.address.addressType)).codeValue;
+//        return JSON.parse(JSON.stringify(row.address.addressType)).codeValue;
+          var _data =JSON.parse(JSON.stringify(row));
+          return ((_data.address) && (_data.address.addressType) &&(_data.address.addressType.codeValue) ) ?(_data.address.addressType.codeValue):"";
       },
       default: 'NULL',
       stringify: true 
@@ -216,7 +229,7 @@ function result(err, result) {
       label: 'state', 
       value: function(row, field, data) {
         var data =JSON.parse(JSON.stringify(row));
-            return (data.address.state) && (data.address.state.codeValue) ?(data.address.state.codeValue):"";
+            return (data.address.state) && (data.address.state.description) ?(data.address.state.description):"";
       },
       default: 'NULL',
       stringify: true 
@@ -224,7 +237,7 @@ function result(err, result) {
     'address.zip',
     //'address.country',
     {
-      label: 'dfdsfds', 
+      label: 'country', 
       value: function(row, field, data) {
         var _data =JSON.parse(JSON.stringify(row));
             return (_data.address.country) && (_data.address.country.codeValue) ?(_data.address.country.codeValue):"";
@@ -265,11 +278,103 @@ function result(err, result) {
     var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
 //  fs.appendFile('file3.csv', csv, function(err) {
-     fs.writeFile('file3.csv', csv, function(err) {
+     fs.appendFile('OCDADDRESS.csv', csv, function(err) {
         if (err) throw err;
-        console.log('file saved');
+        else
+        {
+          count = count + 1;
+          if(count < 18)
+          show();          
+        else 
+          console.log("done");
+        }
       });
 }
 
 
-async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );
+var show = function(){
+  async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );          
+}
+    show();
+  
+
+    // var x=new Promise(function(resolve, reject){
+
+    //     async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );    
+    //     resolve(count);
+    // })
+    // for(var i=0;i<17;i++)
+    // {
+    //       count=i;
+    //       x.then(function(resp){
+    //           console.log("promise",resp);
+    //       },function(err){
+    //           console.log(err);
+    //       });
+
+    // }
+
+
+/*
+db.txn_organizations.aggregate(
+
+  // Pipeline
+  [
+    // Stage 1
+    {
+      $match: { 
+          "directoryId" : ObjectId("57189cd924d8bc65f4123bc3"), 
+          "status" : ObjectId("57283b4214dde6a43b46a7bb")
+      }
+    },
+
+    // Stage 2
+    {
+      $sort: {
+      "orgIdNumber":1
+      }
+    },
+
+    // Stage 3
+    {
+      $unwind: "$address"
+    },
+
+    // Stage 4
+    {
+      $match: { 
+          "address.deleted" : {
+              "$in" : [
+                  false, 
+                  null
+              ]
+          }
+      }
+    },
+
+    // Stage 5
+    {
+      $project: { 
+          "status" : 1, 
+          "orgIdNumber" : 1, 
+          "classificationCode" : 1, 
+          "name" : 1, 
+          "address" : 1, 
+          "parentId" : 1
+      }
+    }
+  ],
+
+  // Options
+  {
+    cursor: {
+      batchSize: 50
+    },
+
+    allowDiskUse: true
+  }
+
+  // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
+
+);
+*/
