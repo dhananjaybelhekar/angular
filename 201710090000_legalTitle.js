@@ -24,7 +24,7 @@ db.txn_organizations.aggregate(
 
     // Stage 4
     {
-      $match: { 
+      $match: { 	"classificationCode":{$ne:ObjectId("57726c33c19c305dc5b1b346")},
           "legalTitles.deleted" : {
               "$in" : [
                   false, 
@@ -42,8 +42,8 @@ db.txn_organizations.aggregate(
           "classificationCode" : 1, 
           "name" : 1, 
           "legalTitles" : 1, 
-          "parentId" : 1,
-          "sequenceNo":1
+          "parentId" : 1, 
+          "sequenceNo" : 1
       }
     }
   ],

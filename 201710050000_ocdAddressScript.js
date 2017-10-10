@@ -18,7 +18,16 @@ db.txn_organizations.aggregate(
     // Stage 3
     {
       $match: {
-      "address.deleted":{$in:[false,null]}
+      {
+  "address.addressType":{$nin:[ObjectId("57726e42c19c3451796ea55f"),ObjectId("57726e42c19c3451796ea562")]},
+   "address.deleted" : {
+        "$in" : [
+            false, 
+            null
+        ]
+    }
+}
+
       }
     },
 

@@ -25,6 +25,7 @@ db.txn_organizations.aggregate(
     // Stage 4
     {
       $match: { 
+        "classificationCode":{$ne:ObjectId("57726c33c19c305dc5b1b34f")},
           "notes.deleted" : {
               "$in" : [
                   false, 
@@ -43,6 +44,7 @@ db.txn_organizations.aggregate(
           "name" : 1, 
           "notes" : 1, 
           "parentId" : 1
+          //15344
       }
     }
   ],

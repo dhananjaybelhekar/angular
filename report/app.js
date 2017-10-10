@@ -10,7 +10,7 @@ var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskus
 
 var count=1;
 //mongoose.connect('mongodb://192.168.10.178/OCD_XML');
-mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
+mongoose.connect('mongodb://192.168.10.148/tw-prod-10-09-2017');
 //mongoose.connect('mongodb://192.168.10.121/tw-prod-20170928');
 
 
@@ -82,7 +82,8 @@ function fun1(callback){
     // Stage 3
     {
       $match: {
-      "address.deleted":{$in:[false,null]}
+      "address.addressType":{$nin:[ new mongoose.Types.ObjectId("57726e42c19c3451796ea55f"), new mongoose.Types.ObjectId("57726e42c19c3451796ea562")]},
+      "address.deleted" : {"$in" : [false, null]}
       }
     },
 
@@ -283,7 +284,7 @@ function result(err, result) {
         else
         {
           count = count + 1;
-          if(count < 18)
+          if(count <= 15)
           show();          
         else 
           console.log("done");
@@ -295,86 +296,7 @@ function result(err, result) {
 var show = function(){
   async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );          
 }
+new Promise(function(){
+
+})
     show();
-  
-
-    // var x=new Promise(function(resolve, reject){
-
-    //     async.waterfall([fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8],result );    
-    //     resolve(count);
-    // })
-    // for(var i=0;i<17;i++)
-    // {
-    //       count=i;
-    //       x.then(function(resp){
-    //           console.log("promise",resp);
-    //       },function(err){
-    //           console.log(err);
-    //       });
-
-    // }
-
-
-/*
-db.txn_organizations.aggregate(
-
-  // Pipeline
-  [
-    // Stage 1
-    {
-      $match: { 
-          "directoryId" : ObjectId("57189cd924d8bc65f4123bc3"), 
-          "status" : ObjectId("57283b4214dde6a43b46a7bb")
-      }
-    },
-
-    // Stage 2
-    {
-      $sort: {
-      "orgIdNumber":1
-      }
-    },
-
-    // Stage 3
-    {
-      $unwind: "$address"
-    },
-
-    // Stage 4
-    {
-      $match: { 
-          "address.deleted" : {
-              "$in" : [
-                  false, 
-                  null
-              ]
-          }
-      }
-    },
-
-    // Stage 5
-    {
-      $project: { 
-          "status" : 1, 
-          "orgIdNumber" : 1, 
-          "classificationCode" : 1, 
-          "name" : 1, 
-          "address" : 1, 
-          "parentId" : 1
-      }
-    }
-  ],
-
-  // Options
-  {
-    cursor: {
-      batchSize: 50
-    },
-
-    allowDiskUse: true
-  }
-
-  // Created with 3T MongoChef, the GUI for MongoDB - http://3t.io/mongochef
-
-);
-*/

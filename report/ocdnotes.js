@@ -8,7 +8,7 @@ var async = require('async');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
  
 var count=1;
-mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
+mongoose.connect('mongodb://192.168.10.148/tw-prod-10-09-2017');
 
 var mstValue = mongoose.model('MST_RefCodeValue',new mongoose.Schema({}));
 var orgScgema = new mongoose.Schema({
@@ -68,12 +68,8 @@ function fun1(callback){
     // Stage 4
     {
       $match: { 
-          "notes.deleted" : {
-              "$in" : [
-                  false, 
-                  null
-              ]
-          }
+      "classificationCode":{$ne:new mongoose.Types.ObjectId("57726c33c19c305dc5b1b34f")}, //curia org
+      "notes.deleted" : {"$in" : [false, null]}
       }
     },
 
@@ -149,7 +145,7 @@ function result(err, result) {
     var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
 //  fs.appendFile('file3.csv', csv, function(err) {
-     fs.writeFile('ocdNotes.csv', csv, function(err) {
+     fs.appendFile('ocdNotes.csv', csv, function(err) {
         if (err) throw err;
          
         else
