@@ -1,6 +1,6 @@
 <html ng-app="todoApp">
   <head>
-       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.3/ckeditor.js"></script>
     <script>
     angular.module('todoApp', [])
@@ -27,19 +27,11 @@
       };
     }
   };
-}).factory('Data', function(){
-  return {root_path:'http://site.com/index.php/'};
 })
-  .controller('TodoListController', function($scope, $http, Data) {
+  .controller('TodoListController', function($scope, $http) {
     $scope.savePage = function(entry) {
             console.log(entry);
-            $http.post(Data.root_path + 'api/v1/pages', entry).
-            success(function(data, status, headers, config) {
-                console.log(data);
-            }).
-            error(function(data, status, headers, config) {
-                console.log(data);
-            });
+           
     };
 })
   

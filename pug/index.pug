@@ -1,0 +1,206 @@
+form(name='personnelForm')
+  style(type='text/css').
+    .selectedRow td {
+    background-color: #fe9;
+    }
+    .table-responsive {
+    overflow-x: auto !important;
+    }
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-label='Close', ng-click='cancel()')
+      span(aria-hidden='true') ×
+    h4#myModalLabel.modal-title {{(editFlag ? "Product And Services":"Product And Services")}}
+  .modal-body
+    .ocd-keyPersonnel
+      uib-tabset(active='activeJustified', justified='true')
+        uib-tab(index='0', heading='General Details')
+          .container-fluid
+            h4.addnewt.container-fluid Company Details
+            .form-group.col-md-4
+              label Company Name
+              input.form-control.input-sm(type='text', ng-model='data.companyName')
+            .form-group.col-md-4
+              label Company Email
+              input.form-control.input-sm(type='text', ng-model='data.companyEmail')
+            .form-group.col-md-4
+              label Company Website
+              input.form-control.input-sm(type='text', ng-model='data.companyWebsite')
+            //
+              <div class="form-group col-md-4">
+              <label>Company Description</label>
+              <input type="text" class="form-control input-sm" ng-model="keyPersonnel.PeopleId">
+              </div>
+            .form-group.col-md-4(ng-class="{'has-error': advertiseForm.expireDate.$touched && advertiseForm.expireDate.$invalid}")
+              label
+                | Expiry Date
+                span.meditator
+              .input-group
+                input.form-control.date-picker(type='text', readonly='', name='startDate', uib-datepicker-popup='dd MMMM, yyyy', ng-model='data.startDate', is-open='popup1.opened1', datepicker-options='advertiseDateOptions', close-text='Close', data-date-format='dd-mm-yyyy', required='')
+                span.input-group-btn
+                  button.btn.btn-sm.btn-default(type='button', ng-click='popup1.opened1=true')
+                    i.fa.fa-calendar
+              .help-block(ng-messages='advertiseForm.expireDate.$error', ng-show='advertiseForm.expireDate.$touched')
+                div(ng-message='required') Please fill this field
+            .form-group.col-md-4(ng-class="{'has-error': advertiseForm.expireDate.$touched && advertiseForm.expireDate.$invalid}")
+              label
+                | Expiry Date
+                span.meditator
+              .input-group
+                input.form-control.date-picker(type='text', readonly='', name='startDate', uib-datepicker-popup='dd MMMM, yyyy', ng-model='data.endDate', is-open='popup1.opened2', datepicker-options='advertiseDateOptions', close-text='Close', data-date-format='dd-mm-yyyy', required='')
+                span.input-group-btn
+                  button.btn.btn-sm.btn-default(type='button', ng-click='popup1.opened2=true')
+                    i.fa.fa-calendar
+              .help-block(ng-messages='advertiseForm.expireDate.$error', ng-show='advertiseForm.expireDate.$touched')
+                div(ng-message='required') Please fill this field
+          .container-fluid
+            h4.addnewt.container-fluid Company Address
+            .form-group.col-md-4
+              label Street1
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.street1')
+            .form-group.col-md-4
+              label Street2
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.street2')
+            .form-group.col-md-4
+              label City
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.city')
+            .form-group.col-md-4
+              label State
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.state')
+            .form-group.col-md-4
+              label Country
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.country')
+            .form-group.col-md-4
+              label Zip
+              input.form-control.input-sm(type='text', ng-model='data.companyAddress.zip')
+            .form-group.col-md-4
+              label Telephone
+              input.form-control.input-sm(type='text', ng-model='data.telephone')
+            .form-group.col-md-4
+              label Fax
+              input.form-control.input-sm(type='text', ng-model='keyPersonnel.PeopleId')
+          h4.addnewt.container-fluid Company Description
+          .widget-main
+            textarea(ck-editor='', ckeditor='options', ng-model='data.companyDescription', ready='onReady()', value='{{data.companyDescription}}', name='body') {{data.companyDescription}}
+          .container-fluid
+            h4.addnewt.container-fluid Company Logo
+            .form-group.col-md-6
+              label Company Logo
+              input(type='file', fileread='horrizontalAdvertise.sectionImage', name='sampleFile')
+              br
+              a.btn.btn-primary(ng-disabled='!horrizontalAdvertise.sectionImage', ng-click='show( horrizontalAdvertise.sectionImage) ') UploadImage
+            .form-group.col-md-3
+              .text-center
+                img.img-responsive.img-thumbnail.img-triangle(ng-src="{{basePath.IMGPATH}}/{{ verticalAdvertise.sectionImage || '/nrp-admin-theme/assets/images/894-895-px.png' }} ", alt='Company Logo ', width='100% ', height='100% ')
+          .alert.alert-info
+            b Note:
+            | Image should be in given size. (Height-100px and Width-400px)
+        uib-tab(index='2 ', heading='Category And Personnel Details')
+          .container-fluid
+            h4.addnewt.container-fluid  Company Category Details
+            .row
+              .form-group.col-md-4(ng-class="{'has-error' : personnelForm.degreeType.$touched && personnelForm.degreeType.$invalid}")
+                label
+                  | Product Category
+                  span.meditator *
+                ui-select(ng-model='newDegree.degreeType', name='degreeType', on-select="newDegree.degreeTypeName = $item.codeValue; newDegree.otherDegree = ''")
+                  ui-select-match(placeholder='Select')
+                    span(ng-bind='$select.selected.codeValue')
+                  ui-select-choices(repeat='thisdegreeType in degreeTypeArray')
+                    span(ng-bind='thisdegreeType.codeValue')
+              .form-group.col-md-4(ng-class="{'has-error' : personnelForm.degreeType.$touched && personnelForm.degreeType.$invalid}")
+                label
+                  | Product Sub Category
+                  span.meditator *
+                ui-select(ng-model='newDegree.degreeType', name='degreeType', on-select="newDegree.degreeTypeName = $item.codeValue; newDegree.otherDegree = ''")
+                  ui-select-match(placeholder='Select')
+                    span(ng-bind='$select.selected.codeValue')
+                  ui-select-choices(repeat='thisdegreeType in degreeTypeArray')
+                    span(ng-bind='thisdegreeType.codeValue')
+            .pull-right
+              a.btn.btn-sm.btn-primary(type='button ', ng-click='saveNewDegree() ', ng-disabled='!(newDegree.sequenceNo || newDegree.degreeType) ')
+                i.fa.fa-check
+                |  Save Category Details
+              a.btn.btn-sm.btn-default(ng-click='resetNewDegree() ')
+                i.fa.fa-remove
+                |  Clear
+            .clearfix
+            br
+            table.table.table-bordered
+              thead
+                tr
+                  th.widthfcl #
+                  th Product Category
+                  th Product Sub Category
+                  th.widthth.text-center Actions
+              tbody
+                tr(ng-repeat='d in data.categories', ng-include="'displayCategory'")
+          .alert.alert-info
+            b Note:
+            | Image should be in given size. (Height-140px and Width-126px)
+          .form-group.col-md-6
+            label Person Image
+            input(type='file', fileread='horrizontalAdvertise.sectionImage', name='sampleFile')
+            br
+            a.btn.btn-primary(ng-disabled='!horrizontalAdvertise.sectionImage', ng-click='show( horrizontalAdvertise.sectionImage) ') UploadImage
+          .form-group.col-md-3
+            .text-center
+              img.img-responsive.img-thumbnail.img-triangle(ng-src="{{basePath.IMGPATH}}/{{ verticalAdvertise.sectionImage || '/nrp-admin-theme/assets/images/894-895-px.png' }} ", alt='Perosn Image ', width='100% ', height='100% ')
+          .clearfix
+          br
+          .container-fluid
+            h4.addnewt.container-fluid Personnel
+            .form-group.col-md-4
+              label Person Name
+              input.form-control.input-sm(type='text', ng-model='selectedPerson.personName')
+            .form-group.col-md-4
+              label Person Designation
+              input.form-control.input-sm(type='text', ng-model='selectedPerson.personDesignation')
+            .pull-right
+              a.btn.btn-sm.btn-primary(type='button ', ng-click='saveNewDegree() ', ng-disabled='!(newDegree.sequenceNo || newDegree.degreeType) ')
+                i.fa.fa-check
+                |  Save Category Details
+              a.btn.btn-sm.btn-default(ng-click='resetNewDegree() ')
+                i.fa.fa-remove
+                |  Clear
+          table.table.table-bordered
+            thead
+              tr
+                th.widthfcl #
+                th Person Name
+                th Person Designation
+                th.widthth.text-center Actions
+            tbody
+              tr(ng-repeat='d in data.personnel', ng-include="'displayPerson'")
+  .modal-footer
+    //
+      <button class="btn btn-primary btn-sm sp10 mr " ng-click="(editFlag? update():add()) " ng-disabled="">
+      <i class="fa " ng-class="loading ? 'fa-spin fa-refresh' : 'fa-save' "></i> Save
+      </button>
+    button.btn.btn-primary.btn-sm.sp10.mr(ng-click='show()', ng-disabled='')
+      i.fa(ng-class="loading ? 'fa-spin fa-refresh' : 'fa-save' ")
+      |  Save
+    a.btn.btn-default.btn-sm.sp10.mr(type='submit ', ng-click='cancel() ') Cancel
+script#displayPerson(type='text/ng-template').
+  <td class="text-center ">{{ $index+1 }}</td>
+  <td>{{d.personName}} {{d.personLastName}}</td>
+  <td>{{d.personDesignation}}</td>
+  <td class="text-center action-buttons ">
+  <a class="blue " ng-click="editPerson(d)">
+  <i class="fa fa-pencil bigger-130 "></i>
+  </a>
+  <a class="red " ng-click="openRemovePopup($index, 'Key Personnel: Degree', removeNewDegree) ">
+  <i class="fa fa-trash bigger-130 "></i>
+  </a>
+  </td>
+script#displayCategory(type='text/ng-template').
+  <td class="text-center ">{{ $index+1 }}</td>
+  <td>{{d.ProductCategoryName}}</td>
+  <td>{{d.ProductSubCategoryName}}</td>
+  <td class="text-center action-buttons ">
+  <a class="blue " ng-click="editNewDegree($index) ">
+  <i class="fa fa-pencil bigger-130 "></i>
+  </a>
+  <a class="red " ng-click="openRemovePopup($index, 'Key Z: Degree', removeNewDegree) ">
+  <i class="fa fa-trash bigger-130 "></i>
+  </a>
+  </td>
