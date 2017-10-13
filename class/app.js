@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-const express = require('express')
-var bodyParser = require('body-parser')
+const express = require('express');
+var bodyParser = require('body-parser');
 const path = require('path')
 mongoose.connect('mongodb://localhost/test', { useMongoClient: true, promiseLibrary: global.Promise });
 const app = express();
