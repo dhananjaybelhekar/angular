@@ -3,3 +3,4 @@ my-app/node_modules/
 class/node_modules/
 ts/node_modules/
 app/node_modules/
+**/node_modules/

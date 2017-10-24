@@ -4,6 +4,7 @@ var jsonexport = require('jsonexport');
 var json2csv = require('json2csv');
 var fs = require('fs');
 var async = require('async');
+var _ = require('loadash');
 
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
  
@@ -171,6 +172,7 @@ function fun8(data,callback){
   console.log("func8");
             //callback(null,data);
   mstValue.populate(data, {path: 'address.state'}, function(err, populatedTransactions) {
+    _.uniqBy(populatedTransactions, 'x');
             // Your populated translactions are inside populatedTransactions
             callback(null,populatedTransactions);
   });
