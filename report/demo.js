@@ -46,3 +46,12 @@ var cb= function(val,cb){
         cb(val,cb); 
 };
 dis(0,cb);
+
+
+function showasd(cb){
+    cb(cb);
+}
+
+showasd(function(d){ 
+    d(d);
+});

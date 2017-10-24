@@ -4,7 +4,7 @@ import * as async from "async";
 import * as mainctrl from "./main.ctrl";
 
 
-mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
+mongoose.connect('mongodb://localhost/test');
 //mongoose.Promise = global.Promise;
 
 
@@ -28,6 +28,6 @@ async.waterfall([
         // arg1 now equals 'three'
         callback(null, 'dhananjay**********************************************');
     }
-], function (err, result) {
+], function (err:any, result:any) {
     console.log(result);
 });

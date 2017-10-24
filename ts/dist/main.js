@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require("mongoose");
 var async = require("async");
 var mainctrl = require("./main.ctrl");
-mongoose.connect('mongodb://192.168.10.178/tw-prod-03-10-2017');
+mongoose.connect('mongodb://localhost/test');
 //mongoose.Promise = global.Promise;
 // var Cat =  new mongoose.Schema({ name: String });
 // const User = mongoose.model("Bat", Cat);
