@@ -4,3 +4,5 @@ class/node_modules/
 ts/node_modules/
 app/node_modules/
 **/node_modules/
+report/*.csv
+report/*.rar
