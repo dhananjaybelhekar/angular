@@ -8,7 +8,7 @@ var async = require('async');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
  
 var count=1;
-mongoose.connect('mongodb://192.168.10.178/tw-prod-30-10-2017');
+mongoose.connect('mongodb://192.168.10.178/tw-prod-06-11-2017');
 
 var mstValue = mongoose.model('MST_RefCodeValue',new mongoose.Schema({}));
 var orgScgema = new mongoose.Schema({
@@ -86,7 +86,7 @@ function fun1(callback){
       "contact.social":1,
       "governing":1,
       "activities.freeText":1,
-      "attendance.countNumber":1,
+      "attendance.count":1,
       "membership":1,
       "timing":1,
       "entityType":1
@@ -132,18 +132,39 @@ function result(err, result) {
      "address.street2",
      "address.cityName",
      "address.stateName",
-     "address.zip",
+     
+    {
+      label: 'address.zip', 
+      value: function(row, field, data) {
+          var _data =JSON.parse(JSON.stringify(row));
+           return ((_data.address) && (_data.address.zip)) ?("'"+_data.address.zip):"";
+      },
+      default: 'NULL',
+      stringify: true 
+    },
      "contact.phoneNumbers",
      "contact.faxNumbers",
      "contact.emails.primary",
      "contact.websites",
      "contact.social",
+     "entityType",
      "governing",
      "activities.freeText",
-     "attendance.countNumber",
-     "membership",
      "timing",
-     "entityType"
+     "attendance.count",
+     "membership"
+    //  {
+    //   label: 'membership', 
+    //   value: function(row, field, data) {
+    //       //var _data =JSON.parse(JSON.stringify(row));
+    //       if(row.membership.length && row.membership[0] != null)
+    //       return row.membership[0];
+    //     else
+    //       return ;
+    //   },
+    //   default: 'NULL',
+    //   stringify: true 
+    // }
     ];
   var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
