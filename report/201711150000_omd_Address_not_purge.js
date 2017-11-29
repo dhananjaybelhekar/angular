@@ -5,7 +5,7 @@ var json2csv = require('json2csv');
 var fs = require('fs');
 var async = require('async');
 
-var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskuse');
+
  
 var count=1;
 mongoose.connect('mongodb://192.168.10.178/tw-prod-06-11-2017');

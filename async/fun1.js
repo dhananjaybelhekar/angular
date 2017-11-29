@@ -118,6 +118,7 @@ function saveInToDb(data){
 	
 	 data.map(function(d){
 		delete d._id;
+		d.id=d._id;
 		var kitty = new dbtemp(d);
 		kitty.save(function (err) {
 		  if (err) {
