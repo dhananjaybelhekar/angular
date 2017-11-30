@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 var json2csv = require('json2csv');
+var json2xml = require('json2xml');
+var _ = require('lodash');
+var cleanDeep = require('clean-deep');
 //var fun = require("./query.js");
 var async = require("async");
 var fs = require('fs');
@@ -29,7 +32,9 @@ var d= {
 		var aggregate=org1.aggregate(
 		  [
 		    {
-		      $match: {    "directoryId" : new mongoose.Types.ObjectId("57189cc224d8bc65f4123bc1"), 
+		      $match: {    
+		      	 "_id":  new mongoose.Types.ObjectId("577e6a1dc19c234cf6e385fa"),
+		      	"directoryId" : new mongoose.Types.ObjectId("57189cc224d8bc65f4123bc1"), 
 		          "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb"), 
 		          "workflowStatus" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb"),
 		          "listingType":{ $elemMatch: { 
@@ -80,25 +85,27 @@ var d= {
 	,
 	fun2:function(arg1data,pageCount, count,callback){
 		 per.populate(arg1data, {path: 'personnel'}, function(err, populatedTransactions) {
+		 	
+
 		            callback(null,populatedTransactions,pageCount, count);
 		  });
 	},
 	fun3:function(arg1data,pageCount, count,callback){
 		 chapter.populate(arg1data, {path: 'chapterSpecification',match:{}}, function(err, populatedTransactions) {
+
 		            callback(null,populatedTransactions,pageCount, count);
 		  });
 	}	
 	,
 	fun4:function(arg1,pageCount, count,callback) {
 		// console.log(JSON.stringify(arg1,null,4));
-		saveInToDb(arg1);
-     // fs.appendFile('OMDD.csv', JSON.stringify(arg1,null,4), function(err) {
-     //    if (err) throw err;
-     //  });
+	//	saveInToDb(arg1);
+			var tempData = cleanDeep(_.cloneDeep(arg1));
+				saveInToDb(tempData);
+//	
         callback(null,pageCount, count);
      },
      result:function (err, pageCount, count) {
-
      	if(_COUNT <= pageCount)
      	{
      		_COUNT +=1;
@@ -115,19 +122,19 @@ function main(){
 		async.waterfall([d.fun1,d.fun2,d.fun3,d.fun4], d.result);	
 }
 function saveInToDb(data){
-	
-	 data.map(function(d){
-		delete d._id;
-		d.id=d._id;
-		var kitty = new dbtemp(d);
-		kitty.save(function (err) {
-		  if (err) {
-		    console.log(err);
-		  } else {
-		    console.log('meow');
-		  }
-		});
-	 })
+		 delete data._id;
+		data.map(function(tempData){
+					var kitty = new dbtemp(tempData);
+					kitty.save(function (err) {
+					  if (err) {
+					    console.log(err);
+					  } else {
+					    console.log('meow');
+					  }
+					});
+
+		})
+
 }
 
 module.exports = {
