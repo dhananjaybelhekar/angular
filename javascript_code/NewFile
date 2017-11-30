@@ -1,0 +1,425 @@
+var arr = [{
+    "id": 1,
+    "tag": "Sec",
+    "parent": "0",
+    "type": "",
+    "printType": ""
+}, {
+    "id": 2,
+    "tag": "ChapterName",
+    "parent": 1,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 3,
+    "tag": "Org",
+    "parent": 2,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 4,
+    "tag": "OrgInfo",
+    "parent": "3",
+    "type": "",
+    "printType": ""
+}, {
+    "id": 5,
+    "tag": "OrganizationID",
+    "parent": 4,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 6,
+    "tag": "OrganizationName",
+    "parent": 4,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 7,
+    "tag": "AddressInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 8,
+    "tag": "Address",
+    "parent": 7,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 9,
+    "tag": "AddressStreet1",
+    "parent": 8,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 10,
+    "tag": "AddressCity",
+    "parent": 8,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 11,
+    "tag": "AddressStateTerritoryAbbr",
+    "parent": 8,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 12,
+    "tag": "AddressZip",
+    "parent": 8,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 13,
+    "tag": "ContactInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 14,
+    "tag": "ContactPhoneNo",
+    "parent": 13,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 15,
+    "tag": "ContactFax",
+    "parent": 13,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 16,
+    "tag": "ContactPrimaryEmail",
+    "parent": 13,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 17,
+    "tag": "ContactWebsites",
+    "parent": 13,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 18,
+    "tag": "InvestmentCommitteeOfficersInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 19,
+    "tag": "KeyPersonnel",
+    "parent": 18,
+    "type": "array",
+    "printType": ""
+}, {
+    "id": 20,
+    "tag": "KeyPersonnelFirstName",
+    "parent": 19,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 21,
+    "tag": "KeyPersonnelLastName",
+    "parent": 19,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 22,
+    "tag": "KeyPersonnelTitle",
+    "parent": 19,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 23,
+    "tag": "KeyPersonnelPhoneNo",
+    "parent": 19,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 24,
+    "tag": "NewBusinessContactOfficersInfo",
+    "parent": 3,
+    "type": "array",
+    "printType": ""
+}, {
+    "id": 25,
+    "tag": "KeyPersonnel",
+    "parent": 24,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 26,
+    "tag": "KeyPersonnelFirstName",
+    "parent": 25,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 27,
+    "tag": "KeyPersonnelLastName",
+    "parent": 25,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 28,
+    "tag": "KeyPersonnelTitle",
+    "parent": 25,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 29,
+    "tag": "KeyPersonnelPhoneNo",
+    "parent": 25,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 30,
+    "tag": "MinimumOperatingDataInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 31,
+    "tag": "MinimumOperatingData",
+    "parent": 30,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 32,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 31,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 33,
+    "tag": "IndustryPreferenceInfo",
+    "parent": 3,
+    "type": "array",
+    "printType": ""
+}, {
+    "id": 34,
+    "tag": "IndustryPreference",
+    "parent": 33,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 35,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 34,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 36,
+    "tag": "FirmPrefersNotToInvestInInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 37,
+    "tag": "FirmPrefersNotToInvestIn",
+    "parent": 36,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 38,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 37,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 39,
+    "tag": "FeeStructureAndMethodCompensationInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 40,
+    "tag": "FeeStructureAndMethodCompensation",
+    "parent": 39,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 41,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 40,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 42,
+    "tag": "ExitCriteriaInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 43,
+    "tag": "ExitCriteria",
+    "parent": 42,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 44,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 43,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 45,
+    "tag": "EstablishInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 46,
+    "tag": "EstablishedYear",
+    "parent": 45,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 47,
+    "tag": "InvesmentPortfolioSizeInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 48,
+    "tag": "InvesmentPortfolioSize",
+    "parent": 47,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 49,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 48,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 50,
+    "tag": "MainSourceOfCapitalInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 51,
+    "tag": "MainSourceOfCapital",
+    "parent": 50,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 52,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 51,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 53,
+    "tag": "FundsAvailableForInvesmentOrLoansInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 54,
+    "tag": "FundsAvailableForInvesmentOrLoans",
+    "parent": 53,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 55,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 54,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 56,
+    "tag": "MinimumSizeInvesmentInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 57,
+    "tag": "MinimumSizeInvesment",
+    "parent": 56,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 58,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 57,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 59,
+    "tag": "PreferredSizeInvesmentInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 60,
+    "tag": "PreferredSizeInvesment",
+    "parent": 59,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 61,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 60,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 62,
+    "tag": "AvgNumberOfDealsCompletedAnnuallyInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 63,
+    "tag": "AvgNumberOfDealsCompletedAnnually",
+    "parent": 62,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 64,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 63,
+    "type": "",
+    "printType": "value"
+}, {
+    "id": 65,
+    "tag": "AvgAmountInvestedAnnuallyInfo",
+    "parent": 3,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 66,
+    "tag": "AvgAmountInvestedAnnually",
+    "parent": 65,
+    "type": "",
+    "printType": ""
+}, {
+    "id": 67,
+    "tag": "ChapterSpecificationSpecificationTypeName",
+    "parent": 66,
+    "type": "",
+    "printType": "value"
+}];
+function bunflatten(nodes) {
+    var map = {}, _node, roots = [];
+    for (var i = 0; i < nodes.length; i += 1) {
+        _node = nodes[i];
+        _node.children = [];
+        map[_node.id] = i;
+        // use map to look-up the parents
+        if (_node.parent !== "0") {
+            _node.children = [];
+            nodes[map[_node.parent]].children.push(_node);
+        } else {
+            roots.push(_node);
+        }
+    }
+    return roots;
+}
+arr.map(function(data) {
+    data.children = [];
+    return data;
+})
+z = bunflatten(arr);
+console.log(z);
