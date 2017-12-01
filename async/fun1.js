@@ -13,7 +13,8 @@ var orgScgema = new mongoose.Schema({
     }
 });
 orgScgema.plugin(mongooseAggregatePaginate);
-var org1 = mongoose.model('TXN_Organization',orgScgema);
+var db={};
+ db.org1 = mongoose.model('TXN_Organization',orgScgema);
 var per = mongoose.model('TXN_Personnels',{});
 //var dbtemp = mongoose.model('TXN_Temp',{data:Schema.Types.Mixed });
 
@@ -26,7 +27,7 @@ var  _COUNT = 1;
 var options = { page : _COUNT, limit : 5000, allowDiskUse: true };
 var d= {
 	 fun1:function(callback) {
-		var aggregate=org1.aggregate(
+		var aggregate=db['org1'].aggregate(
 		  [
 		    {
 		      $match: {    "directoryId" : new mongoose.Types.ObjectId("57189cc224d8bc65f4123bc1"), 
@@ -65,7 +66,7 @@ var d= {
 		    }
 		  ]
 		);
-	org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+	db['org1'].aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
 		console.log("Processing ",_COUNT," to ",pageCount,"of" , count ,"entries");
 		  if(err) 
 		  {
@@ -91,7 +92,7 @@ var d= {
 	,
 	fun4:function(arg1,pageCount, count,callback) {
 		// console.log(JSON.stringify(arg1,null,4));
-		saveInToDb(arg1);
+	//	saveInToDb(arg1);
      // fs.appendFile('OMDD.csv', JSON.stringify(arg1,null,4), function(err) {
      //    if (err) throw err;
      //  });
@@ -117,15 +118,16 @@ function main(){
 function saveInToDb(data){
 	
 	 data.map(function(d){
-		delete d._id;
-		var kitty = new dbtemp(d);
-		kitty.save(function (err) {
-		  if (err) {
-		    console.log(err);
-		  } else {
-		    console.log('meow');
-		  }
-		});
+	 	console.log(d);
+		// delete d._id;
+		// var kitty = new dbtemp(d);
+		// kitty.save(function (err) {
+		//   if (err) {
+		//     console.log(err);
+		//   } else {
+		//     console.log('meow');
+		//   }
+		// });
 	 })
 }
 
