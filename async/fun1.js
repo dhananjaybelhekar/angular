@@ -14,7 +14,7 @@ var orgScgema = new mongoose.Schema({
 });
 orgScgema.plugin(mongooseAggregatePaginate);
 var db={};
- db.org1 = mongoose.model('TXN_Organization',orgScgema);
+ db.txn_organizations = mongoose.model('TXN_Organization',orgScgema);
 var per = mongoose.model('TXN_Personnels',{});
 //var dbtemp = mongoose.model('TXN_Temp',{data:Schema.Types.Mixed });
 
@@ -27,7 +27,7 @@ var  _COUNT = 1;
 var options = { page : _COUNT, limit : 5000, allowDiskUse: true };
 var d= {
 	 fun1:function(callback) {
-		var aggregate=db['org1'].aggregate(
+		var aggregate=db['txn_organizations'].aggregate(
 		  [
 		    {
 		      $match: {    "directoryId" : new mongoose.Types.ObjectId("57189cc224d8bc65f4123bc1"), 
@@ -66,7 +66,7 @@ var d= {
 		    }
 		  ]
 		);
-	db['org1'].aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+	db['txn_organizations'].aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
 		console.log("Processing ",_COUNT," to ",pageCount,"of" , count ,"entries");
 		  if(err) 
 		  {
