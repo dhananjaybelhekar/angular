@@ -53,12 +53,30 @@ var d={
 	},
 	result:function(err,results,pageCount, count){
 	//	console.log("results",results);
+	//console.log(results[0]);
+	var arr=[];
 		results.map(function(data){
-			savefile("-Org")
-			savefile("--name"," "+data.name)	
-			savefile("--OrgId"," "+data.name)
+			//asyncrunus
+			// Promise.all([
+			// 	savefile("-Org"),
+			// 	savefile("--name"," "+data.name),
+			// 	savefile("--OrgId"," "+data.org_id)]).then(function(resp){
+			// 	console.log(resp);
+			// });
+
+			//syncrunus
+			// savefile("-Org").then(function(resp){
+			// 	var tempData={org:{}};
+			// 	if(resp)
+			//  	savefile("--name"," "+data.name).then(function(resp1){
+			//  		tempData.org.name=data.name;
+			//  		if(resp1)
+			//  		savefile("--OrgId"," "+data.name).then(function(resp2){
+			//  			tempData.org.id={_ID:data.org_id};
+			//  			arr.push(tempData);
+			//  			console.log("resp2",arr);
+			//  		},function(err){})},function(err){})},function(err){})
 		})
-		
 		console.log("pageCount",pageCount);
 		console.log("pageCount",count);
 	}
@@ -77,9 +95,12 @@ function show(data){
 		}
 }
 function savefile(tag,value=""){
-	 fs.appendFile('xml.txt',tag+value+'\n', function(err) {
-        if (err) throw err;
+	return new Promise(function(resolve,reject){
+		fs.appendFile('xml.txt',tag+value+'\n', function(err) {
+        if (err) throw reject(err);
       });
+		resolve(true)
+	});
 }
 function bunflatten(nodes) {
     var map = {}, _NODE, roots = [];

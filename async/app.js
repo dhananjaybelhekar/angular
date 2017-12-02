@@ -27,7 +27,7 @@ var z =[
     "parent": 1,
     "value": "",
     "collection": "txn_organization",
-    "query": [{"$match":{"directoryId":{"_eval":"Id","value":"57189cc224d8bc65f4123bc1"},"status":{"_eval":"Id","value":"57283b4214dde6a43b46a7bb"},"workflowStatus":{"_eval":"Id","value":"57283b4214dde6a43b46a7bb"},"listingType":{"$elemMatch":{"listingName":"Venture Capital","listingActive":true}}}},{"$unwind":"$listingType"},{"$match":{"listingType.listingName":"Venture Capital","listingType.listingActive":true}},{"$sort":{"name":1}},{"$project":{"orgId":1,"name":1,"address":1,"contact":1,"personnel":1,"chapterSpecification":1}}]
+    "query": [{"$match":{"directoryId":{"_eval":"Id","value":"57189cc224d8bc65f4123bc1"},"status":{"_eval":"Id","value":"57283b4214dde6a43b46a7bb"},"workflowStatus":{"_eval":"Id","value":"57283b4214dde6a43b46a7bb"},"listingType":{"$elemMatch":{"listingName":"Venture Capital","listingActive":true}}}},{"$unwind":"$listingType"},{"$match":{"listingType.listingName":"Venture Capital","listingType.listingActive":true}},{"$sort":{"name":1}},{"$project":{"org_id":1,"name":1,"address":1,"contact":1,"personnel":1,"chapterSpecification":1}}]
   },
   {
     "id": 3,
