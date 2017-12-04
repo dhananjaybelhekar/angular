@@ -1,0 +1,57 @@
+<html>
+<head>
+
+  </head>
+  <body>
+  <pre id="json"></pre>
+    <script>
+  function show1(data,cb){
+   console.log("show1 end");
+   return cb(data);
+}
+function show2(data,cb){
+   console.log("show2 end");
+   return  cb(data);
+}
+function show3(data,cb){
+  console.log("show3 end");
+   data.show1.show2.show3 = data.number * 1000 + 101;
+
+   return data;
+   
+  // return cb(data);
+}
+function main(data,cb){
+    return show1(data,function(data){
+        data.show1 = {};
+       return  show2(data,function(data){
+        data.show1.show2 = {};
+           return  show3(data,cb);
+        })
+    })
+}
+  var arr=[];
+  for(var i=0;i<3;i++)
+  arr.push(main({number:i},function(){ console.log("all DONE")})) ;
+  //document.body.innerText = JSON.stringify(arr,null,4);
+  document.getElementById("json").innerHTML = JSON.stringify(arr, undefined, 2)
+
+  function pfun1(d){
+    return new Promise(function(rev,rej){
+      if(d > 10 )
+        rev("large");
+      else
+        rej("small");
+    })
+  }
+
+  pfun1(100 ).then(function(res){
+    document.getElementById("json").append(res);
+  },function(err){
+    console.log(err);
+    document.getElementById("json").append(err);
+  })
+  //console.log(arr);
+  </script>
+  </body>
+</html>
