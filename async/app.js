@@ -63,17 +63,24 @@ var z =[
   },
   {
     "id": 2,
+    "tag": "add",
+    "parent": ,
+    "value": "",
+    "children" : []
+  },
+  {
+    "id": 3,
     "tag": "Par",
-    "parent": 1,
+    "parent": 2,
     "value": "",
     "collection": "txn_organization",
     "query": [[{$match: { "_id": {"_eval":"Id","value":"577e6a1fc19c234cf6e387d5" }} }, {$unwind: "$personnel"}, {$lookup: {"from" : "txn_personnels", "localField" : "personnel", "foreignField" : "_id", "as" : "personnel"} }, {$unwind: "$personnel"}, {$match: {"personnel.deleted":false } }, {$group: {_id:"_id", Per:{$addToSet:"$personnel"} } } ]],
     "children" : []
   },
   {
-    "id": 3,
+    "id": 4,
     "tag": "--Name",
-    "parent": 1,
+    "parent": 2,
     "value": "value",
     "collection": "txn_organization",
     "query": [{"$match":{"_id":{"_eval":"Id","value":"577e6a1fc19c234cf6e387e7"}}}],

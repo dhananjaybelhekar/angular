@@ -19,7 +19,14 @@ var _DB={},
 	_QR={},
 	_NODE={},
 	_COUNT = 1,
-	_OPTION = { page : _COUNT, limit : 5000, allowDiskUse: true };
+	_OPTION = { page : _COUNT, limit : 5000, allowDiskUse: true },
+	_ARR={arr:[],results:function(err,results,pageCount, count){
+		//console.log(JSON.stringify(results));
+		savefile(JSON.stringify(results,null,5)).then((resp)=>{
+			console.log("done");
+		});
+}
+};
 
 orgScgema.plugin(mongooseAggregatePaginate);
 
@@ -39,6 +46,7 @@ module.exports  = {
 
 //console.log(JSON.stringify(bunflatten(addChildren(data)),null,5));
 		show(bunflatten(addChildren(data)));
+		async.waterfall(_ARR.arr, d.result);
 	}
 }
 
@@ -48,11 +56,19 @@ module.exports  = {
 var d={
 	fun1:function(callback){
 
-		 _DB[_NODE.collection].aggregate(evaluate(_NODE.query)).exec(function(err,data){
+		if(_NODE.query!=undefined)
+		{
+		_DB[_NODE.collection].aggregate(evaluate(_NODE.query)).exec(function(err,data){
 		 	if(err) 
 		 		callback(null, "results","pageCount", "count"); 	
 		  callback(null, data,"pageCount", "count"); 	
-		 });
+		 });	
+	}else{
+
+		data.tag=_NODE.tag;
+		callback(null, data,"pageCount", "count"); 	
+	}
+		 
 		
 	},
 	result:function(err,results,pageCount, count){
@@ -63,15 +79,34 @@ var d={
 }
 }
 function show(data){
-//	console.log(JSON.stringify(data,null,5));
+	//console.log(JSON.stringify(data,null,5));
+
+console.log(JSON.stringify(data,null,5));
 	for(var i=0;i<data.length;i++)
 		{
-		    // if(data[i].query == undefined)
-		    // 	savefile(data[i].tag)
-		    if(data[i].query)
-		    {
-				queryExec(data[i]);
-		    }
+			
+			//console.log(data[0].id);
+		
+		// 	_ARR.arr.push({
+		// 	data.id :()=>{
+		// 	_DB[_NODE.collection].aggregate(evaluate(_NODE.query)).exec(function(err,data){
+		//  	if(err) 
+		//  	 	callback(null, "results","pageCount", "count"); 	
+		// 	  callback(null, data,"pageCount", "count"); 	
+		// 	 });	
+		// }
+		// 	});
+
+		
+
+			
+		  //   if(data[i].query == undefined)
+		    	
+		  //   if(data[i].query)
+		  //   {
+				// queryExec(data[i]);
+		  //   }
+		  // // queryExec(data[i]);
 		    if(data[i].children.length > 0)
 		    {
 		    	show(data[i].children);

@@ -3,6 +3,7 @@
     "async": "^2.6.0",
     "fs": "^0.0.1-security",
     "json2csv": "^3.11.5",
+    "jsonata": "^1.4.1",
     "loadash": "^1.0.0",
     "mongoose": "^4.13.5",
     "mongoose-aggregate-paginate-allowdiskuse": "^1.0.1"
