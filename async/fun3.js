@@ -20,13 +20,7 @@ var _DB={},
 	_NODE={},
 	_COUNT = 1,
 	_OPTION = { page : _COUNT, limit : 5000, allowDiskUse: true },
-	_ARR={arr:[],results:function(err,results,pageCount, count){
-		//console.log(JSON.stringify(results));
-		savefile(JSON.stringify(results,null,5)).then((resp)=>{
-			console.log("done");
-		});
-}
-};
+	_ARR={arr:[]};
 
 orgScgema.plugin(mongooseAggregatePaginate);
 
@@ -43,70 +37,51 @@ _DB.txn_chapterspecifications = mongoose.model('TXN_Chapterspecifications',{});
 
 module.exports  = {
 	exec:function(data){
-
-//console.log(JSON.stringify(bunflatten(addChildren(data)),null,5));
 		show(bunflatten(addChildren(data)));
-		async.waterfall(_ARR.arr, d.result);
 	}
 }
 
-    
-
-
 var d={
 	fun1:function(callback){
-
+		var tempExe = new Promise(function(res,rej){
 		if(_NODE.query!=undefined)
 		{
 		_DB[_NODE.collection].aggregate(evaluate(_NODE.query)).exec(function(err,data){
 		 	if(err) 
-		 		callback(null, "results","pageCount", "count"); 	
-		  callback(null, data,"pageCount", "count"); 	
+		 		rej(err);
+		  res(data); 	
 		 });	
-	}else{
+		}
 
-		data.tag=_NODE.tag;
-		callback(null, data,"pageCount", "count"); 	
-	}
-		 
+		});
+		setTimeout(()=>{
+			tempExe.then((res)=>{
+				callback(null,res,'pageCount', 'count');
+			},(err)=>{
+					callback(null,err,'pageCount', 'count');
+			})	
+		},2000);
 		
+
 	},
 	result:function(err,results,pageCount, count){
-		//console.log(JSON.stringify(results));
-		savefile(JSON.stringify(results,null,5)).then((resp)=>{
-			console.log("done");
+		savefile(JSON.stringify(_ARR,null,5)).then((resp)=>{
+			console.log("done=");
 		});
 }
 }
 function show(data){
-	//console.log(JSON.stringify(data,null,5));
-
-console.log(JSON.stringify(data,null,5));
+	//console.log(JSON.stringify(data,null,3));
 	for(var i=0;i<data.length;i++)
-		{
-			
-			//console.log(data[0].id);
-		
-		// 	_ARR.arr.push({
-		// 	data.id :()=>{
-		// 	_DB[_NODE.collection].aggregate(evaluate(_NODE.query)).exec(function(err,data){
-		//  	if(err) 
-		//  	 	callback(null, "results","pageCount", "count"); 	
-		// 	  callback(null, data,"pageCount", "count"); 	
-		// 	 });	
-		// }
-		// 	});
+		{	
+		    if(data[i].query)
+		    {
+				queryExec(data[i]).then((res)=>{
+					console.log(res);
+				},(err)=>{
 
-		
-
-			
-		  //   if(data[i].query == undefined)
-		    	
-		  //   if(data[i].query)
-		  //   {
-				// queryExec(data[i]);
-		  //   }
-		  // // queryExec(data[i]);
+				})
+		    }
 		    if(data[i].children.length > 0)
 		    {
 		    	show(data[i].children);
@@ -145,9 +120,15 @@ function addChildren(arr){
 }
 function queryExec(data)
 {
-		_NODE=data;
-		//console.log(JSON.stringify(evaluate(_NODE.query)));
+	return new Promise((res,rej)=>{
+		_NODE=data;		
 		async.waterfall([d.fun1], d.result);
+		if(1)
+			res("async");
+		else
+			rej("async");
+	});
+		
 }
 
 function evaluate(object) {

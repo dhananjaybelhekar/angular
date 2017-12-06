@@ -64,7 +64,7 @@ var z =[
   {
     "id": 2,
     "tag": "add",
-    "parent": ,
+    "parent":1,
     "value": "",
     "children" : []
   },
@@ -88,5 +88,19 @@ var z =[
   }
 ];
 fun3.exec(z);
+
+  // function pFun(){
+  //   return new Promise(function(res,rej){
+  //     if(1)
+  //       res(true);
+  //     elsed
+  //       rej(false);
+  //   })
+  // }
+  // pFun().then(function(res){
+  //   console.log(res);
+  // },function(err){
+  // console.log(res);
+  // })
 
 //--------------------- fun3.js-------------------------------------------------------
