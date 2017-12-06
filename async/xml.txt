@@ -1,0 +1,119 @@
+[
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "_id": "57640ac1c19caec92e9c30c1",
+                    "name": "Sloss Furnaces National Historic Landmark"
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     },
+     {
+          "tag": "fun2",
+          "children": [
+               {
+                    "_id": "57640ac1c19caec92e9c30c2",
+                    "name": "The George Washington University Museum and The Textile Museum"
+               }
+          ],
+          "id": 2,
+          "parent": 1
+     },
+     {
+          "tag": "fun2",
+          "children": [
+               {
+                    "_id": "57640ac1c19caec92e9c30c3",
+                    "name": "Museum of Arts & Sciences"
+               }
+          ],
+          "id": 3,
+          "parent": 1
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [],
+                    "id": 2,
+                    "parent": 1
+               },
+               {
+                    "tag": "fun2",
+                    "children": [],
+                    "id": 3,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+]
