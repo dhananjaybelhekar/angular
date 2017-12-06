@@ -1,5 +1,3 @@
-
-
 var mongoose = require("mongoose"),
 Schema = mongoose.Schema;
 //mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
@@ -128,9 +126,7 @@ function cloneJSON(obj) {
 run(function(data){
 	//bunflatten(data)
 	var temp = bunflatten(data);
-
 	savefile(JSON.stringify(cloneJSON(temp),null,5)).then((res)=>{
 		console.log("done FILE");
 	})
 })
-
