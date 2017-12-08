@@ -116,4 +116,160 @@
           "id": 1,
           "parent": 0
      }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {}
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "value": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
+][
+     {
+          "tag": "fun1",
+          "children": [
+               {
+                    "tag": "fun2",
+                    "children": [
+                         {
+                              "tag": "fun2",
+                              "children": [],
+                              "id": 3,
+                              "parent": 2,
+                              "printType": "sdf"
+                         }
+                    ],
+                    "id": 2,
+                    "parent": 1
+               }
+          ],
+          "id": 1,
+          "parent": 0
+     }
 ]

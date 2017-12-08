@@ -63,7 +63,7 @@ function fun3(cb,d){
 			"children":data,
 			id:3,
 			parent:2,
-			value:"sdf"
+			printType:"sdf"
 		});
 		cb(d);
 	})
@@ -77,11 +77,16 @@ function run(cb){
 	},[])
 }
 run(function(data){
-	console.log("END ALL",
+	
+		
+		var x= bunflatten(data);
+		var y= cloneJSON(x);
+		console.log(JSON.stringify(y,null,6));
+
 		savefile(JSON.stringify(bunflatten(data),null,5)).then((res)=>{
 			console.log("done FILE");
 		})
-		);
+		
 })
 
 function savefile(tag){
@@ -107,4 +112,30 @@ function bunflatten(nodes) {
         }
     }
     return roots;
+}
+
+function cloneJSON(obj) {
+    // basic type deep copy
+    if (obj === null || obj === undefined || typeof obj !== 'object')  {
+        return obj
+    }
+    // array deep copy
+    if (obj instanceof Array) {
+        var cloneA = [];
+        for (var i = 0; i < obj.length; ++i) {
+            cloneA[i] = cloneJSON(obj[i]);
+        }              
+        return cloneA;
+    }                  
+    // object deep copy
+    var cloneO = {};   
+    for (var i in obj) {
+            if(i == 'children' && obj[i].length > 0 )
+            cloneO[obj.tag]=cloneJSON(obj[i]);
+          else
+          cloneO[obj.tag]= obj.printType;
+        
+        //cloneO[i] = cloneJSON(obj[i]);
+    }                  
+    return cloneO;
 }
