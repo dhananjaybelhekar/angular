@@ -1,6 +1,4 @@
 var mongoose = require("mongoose"),
-jsonxml = require('jsontoxml'),
-format = require('xml-formatter'),
 Schema = mongoose.Schema;
 //mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
 mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
@@ -31,60 +29,43 @@ _DB.txn_temp= mongoose.model('TXN_Temp',new mongoose.Schema({
 
 function fun1(cb,d){
 	_DB.txn_organization.find(_QR.qr).exec(function(err,data){
-		var xxx=[];
-xxx.push({
-			tag:"Sec",
-			parent:0,
-			id:1
-		});
+		var xxx="";
+	xxx+="Sec\n";
+			
 		data.map((zzz)=>{
 			zzz = JSON.parse(JSON.stringify(zzz));
 		
-		xxx.push({
-			tag:"Org",
-			parent:1,
-			id:2
-		});
-		xxx.push({
-			tag:"OrgName",
-			parent:2,
-			id:3,
-			printType:zzz.name
-		});
+		xxx+=" Org\n";
+		xxx+="  OrgName\n";
 	
 		//console.log(zzz.features);
-		xxx.push({
-			tag:"featuresInfoTaf",
-			parent:2,
-			id:4,
-		});
+		// for(var dd in zzz.features)
+		// {
+		// xxx.push({
+		// 	tag:"featuresInfo",
+		// 	parent:2,
+		// 	id:4,
+		// });
 
-		for(var dd in zzz.features)
-		{
-		xxx.push({
-			tag:"featuresInfo",
-			parent:4,
-			id:5,
-		});
-			xxx.push({
-				tag:"featuresName",
-				parent:5,
-				id:6,
-				printType:zzz.features[dd].codeName
-			});
-			xxx.push({
-				tag:"featureType",
-				parent:5,
-				id:7,
-				printType:zzz.features[dd].featureType
-			});
-				xxx.push({
-				tag:"featureType",
-				parent:5,
-				id:8,
-				printType:zzz.features[dd].code
-			});
-		}
+		// 	xxx.push({
+		// 		tag:"featuresName",
+		// 		parent:4,
+		// 		id:5,
+		// 		printType:zzz.features[dd].codeName
+		// 	});
+		// 	xxx.push({
+		// 		tag:"featureType",
+		// 		parent:4,
+		// 		id:6,
+		// 		printType:zzz.features[dd].featureType
+		// 	});
+		// 		xxx.push({
+		// 		tag:"featureType",
+		// 		parent:4,
+		// 		id:7,
+		// 		printType:zzz.features[dd].code
+		// 	});
+		// }
 
 
 		});
@@ -93,7 +74,7 @@ xxx.push({
 
 
 			cb(xxx);
-	})
+	});
 }
 function run(cb){
 	fun1((data)=>{
@@ -102,7 +83,7 @@ function run(cb){
 }
 function savefile(tag){
 	return new Promise(function(resolve,reject){
-		fs.appendFile('xml.xml',format(jsonxml(cloneJSON(bunflatten(tag)))), function(err) {
+		fs.appendFile('xml.txt',tag, function(err) {
         if (err) throw reject(err);
       });
 		resolve(true)
@@ -150,12 +131,12 @@ function cloneJSON(obj) {
 }
 run(function(data){
 	//bunflatten(data)
-	 
+	// var temp = bunflatten(data);
 	// savefile(JSON.stringify(cloneJSON(temp),null,5)).then((res)=>{
 	// 	console.log("done FILE");
 	// })
 //	var temp = bunflatten(data);
-	savefile(data).then((res)=>{
+	savefile(JSON.stringify(data,null,5)).then((res)=>{
 		console.log("done FILE");
 	})
 })

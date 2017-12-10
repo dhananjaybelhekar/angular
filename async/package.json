@@ -4,8 +4,10 @@
     "fs": "^0.0.1-security",
     "json2csv": "^3.11.5",
     "jsonata": "^1.4.1",
+    "jsontoxml": "^0.1.0",
     "loadash": "^1.0.0",
     "mongoose": "^4.13.5",
-    "mongoose-aggregate-paginate-allowdiskuse": "^1.0.1"
+    "mongoose-aggregate-paginate-allowdiskuse": "^1.0.1",
+    "xml-formatter": "^1.0.1"
   }
 }
