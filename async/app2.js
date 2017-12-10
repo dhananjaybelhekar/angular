@@ -5,8 +5,8 @@ _ = require('lodash'),
 ProgressBar = require('progress'),
 jsonata = require("jsonata"),
 Schema = mongoose.Schema;
-mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
-//mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
+//mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
+mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
 var fs = require('fs');
 var orgScgema = new mongoose.Schema({
 	personnel:Schema.Types.Mixed,
@@ -80,10 +80,10 @@ function fun1(cb,d){
 		xxx.push({
 			tag:"listingTypeInfo",
 			parent:2,
-<<<<<<< HEAD
 			id:4,
 		});
-//var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
+var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
+console.log(res)
 		for(var dd in zzz.listingType)
 		{
 			xxx.push({
@@ -98,10 +98,6 @@ function fun1(cb,d){
 				printType:zzz.listingType[dd].listingName
 			});
 		}
-=======
-			printType:"sdf",
-			children:[]
->>>>>>> c3aa2dbbd4b7296713ab9b3d4fc3dbfeb84f51ef
 		});
 		cb(xxx);
 	})
@@ -111,7 +107,6 @@ function run(cb){
 		cb(data);
 	},[])
 }
-
 function savefile(tag){
 	return new Promise(function(resolve,reject){
 		fs.appendFile('xml.xml',format(jsonxml(cloneJSON(bunflatten(tag)))), function(err) {
@@ -135,7 +130,6 @@ function bunflatten(nodes) {
     }
     return roots;
 }
-
 function cloneJSON(obj) {
     // basic type deep copy
     if (obj === null || obj === undefined || typeof obj !== 'object')  {
@@ -166,7 +160,6 @@ run(function(data){
 		console.log("done FILE");
 	})
 })
-<<<<<<< HEAD
 function evaluate(object) {
     if (object && object.constructor === Array) {
         for (var i = 0; i < object.length; i++) {
@@ -199,5 +192,3 @@ function evaluate(object) {
     }
     return object;
 }
-=======
->>>>>>> c3aa2dbbd4b7296713ab9b3d4fc3dbfeb84f51ef
