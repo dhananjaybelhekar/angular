@@ -8,6 +8,7 @@
     "loadash": "^1.0.0",
     "mongoose": "^4.13.5",
     "mongoose-aggregate-paginate-allowdiskuse": "^1.0.1",
+    "progress": "^2.0.0",
     "xml-formatter": "^1.0.1"
   }
 }

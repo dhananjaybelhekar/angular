@@ -1,6 +1,9 @@
 var mongoose = require("mongoose"),
 jsonxml = require('jsontoxml'),
 format = require('xml-formatter'),
+_ = require('lodash'),
+ProgressBar = require('progress'),
+jsonata = require("jsonata"),
 Schema = mongoose.Schema;
 //mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
 mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
@@ -11,7 +14,7 @@ var orgScgema = new mongoose.Schema({
     children:[Schema.Types.Mixed],
 });
 var _DB={},
-	_QR={qr:{"directoryId" : new mongoose.Types.ObjectId("57189b3e24d8bc65f4123bbf")},
+	_QR={qr:{"directoryId" : {"_eval":"Id","value":"57189b3e24d8bc65f4123bbf"}},
 		qr1:{"_id" :{$in:[
 			new mongoose.Types.ObjectId("57640ac1c19caec92e9c30c1"),
 			// new mongoose.Types.ObjectId("57640ac1c19caec92e9c30c7"),
@@ -19,6 +22,16 @@ var _DB={},
 			]} },
 	qr2:[{$match: { "_id": {"_eval":"Id","value":"577e6a1fc19c234cf6e387d5" }} }, {$unwind: "$personnel"}, {$lookup: {"from" : "txn_personnels", "localField" : "personnel", "foreignField" : "_id", "as" : "personnel"} }, {$unwind: "$personnel"}, {$match: {"personnel.deleted":false } }, {$group: {_id:"_id", Per:{$addToSet:"$personnel"} } } ],
 	qr3:{"_id" : new mongoose.Types.ObjectId("57640ac1c19caec92e9c30c3")},
+	cfs:[
+		// Stage 1
+		{
+			$match: {
+			    "directoryId": {"_eval":"Id","value":"57189cc224d8bc65f4123bc1"}, 
+			    "status": {"_eval":"Id","value":"57283b4214dde6a43b46a7bb"}, 
+			
+			}
+		},
+	],
 };
 
 _DB.txn_organization = mongoose.model('TXN_Organization',orgScgema);
@@ -30,7 +43,8 @@ _DB.txn_temp= mongoose.model('TXN_Temp',new mongoose.Schema({
 },{strict: false}));
 
 function fun1(cb,d){
-	_DB.txn_organization.find(_QR.qr).exec(function(err,data){
+	_DB.txn_organization.aggregate(evaluate(_QR.cfs)).exec(function(err,data){
+		
 		var xxx=[];
 		xxx.push({
 			tag:"Sec",
@@ -46,21 +60,34 @@ function fun1(cb,d){
 			id:2
 		});
 		xxx.push({
-			tag:"OrgName",
+			tag:"OrgInfo",
 			parent:2,
+			id:7,
+			
+		});
+		xxx.push({
+			tag:"OrgName",
+			parent:7,
 			id:3,
 			printType:zzz.name
 		});
 		xxx.push({
-			tag:"featuresInfoTaf",
+			tag:"OrgId",
+			parent:7,
+			id:9,
+			printType:zzz.org_id
+		});
+		xxx.push({
+			tag:"listingTypeInfo",
 			parent:2,
 			id:4,
 		});
-
-		for(var dd in zzz.features)
+var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
+console.log(res)
+		for(var dd in zzz.listingType)
 		{
 			xxx.push({
-				tag:"featuresInfo",
+				tag:"listingType",
 				parent:4,
 				id:5,
 			});
@@ -68,19 +95,7 @@ function fun1(cb,d){
 				tag:"featuresName",
 				parent:5,
 				id:6,
-				printType:zzz.features[dd].codeName
-			});
-			xxx.push({
-				tag:"featureType",
-				parent:5,
-				id:7,
-				printType:zzz.features[dd].featureType
-			});
-				xxx.push({
-				tag:"featureType",
-				parent:5,
-				id:8,
-				printType:zzz.features[dd].code
+				printType:zzz.listingType[dd].listingName
 			});
 		}
 		});
