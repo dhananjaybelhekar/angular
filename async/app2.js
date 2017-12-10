@@ -32,7 +32,7 @@ _DB.txn_temp= mongoose.model('TXN_Temp',new mongoose.Schema({
 function fun1(cb,d){
 	_DB.txn_organization.find(_QR.qr).exec(function(err,data){
 		var xxx=[];
-xxx.push({
+		xxx.push({
 			tag:"Sec",
 			parent:0,
 			id:1
@@ -51,8 +51,6 @@ xxx.push({
 			id:3,
 			printType:zzz.name
 		});
-	
-		//console.log(zzz.features);
 		xxx.push({
 			tag:"featuresInfoTaf",
 			parent:2,
@@ -61,11 +59,11 @@ xxx.push({
 
 		for(var dd in zzz.features)
 		{
-		xxx.push({
-			tag:"featuresInfo",
-			parent:4,
-			id:5,
-		});
+			xxx.push({
+				tag:"featuresInfo",
+				parent:4,
+				id:5,
+			});
 			xxx.push({
 				tag:"featuresName",
 				parent:5,
@@ -85,14 +83,8 @@ xxx.push({
 				printType:zzz.features[dd].code
 			});
 		}
-
-
 		});
-	//	var zzz =JSON.parse(JSON.stringify(data))[0];
-		
-
-
-			cb(xxx);
+		cb(xxx);
 	})
 }
 function run(cb){
@@ -149,12 +141,6 @@ function cloneJSON(obj) {
     return cloneO;
 }
 run(function(data){
-	//bunflatten(data)
-	 
-	// savefile(JSON.stringify(cloneJSON(temp),null,5)).then((res)=>{
-	// 	console.log("done FILE");
-	// })
-//	var temp = bunflatten(data);
 	savefile(data).then((res)=>{
 		console.log("done FILE");
 	})
