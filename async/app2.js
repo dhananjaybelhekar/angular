@@ -5,8 +5,8 @@ _ = require('lodash'),
 ProgressBar = require('progress'),
 jsonata = require("jsonata"),
 Schema = mongoose.Schema;
-//mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
-mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
+mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
+//mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
 var fs = require('fs');
 var orgScgema = new mongoose.Schema({
 	personnel:Schema.Types.Mixed,
@@ -46,57 +46,21 @@ function fun1(cb,d){
 	_DB.txn_organization.aggregate(evaluate(_QR.cfs)).exec(function(err,data){
 		
 		var xxx=[];
-		xxx.push({
-			tag:"Sec",
-			parent:0,
-			id:1
-		});
+		xxx.push({tag:"Sec",id:1,parent:0 }); 
+
 		data.map((zzz)=>{
-			zzz = JSON.parse(JSON.stringify(zzz));
-		
-		xxx.push({
-			tag:"Org",
-			parent:1,
-			id:2
-		});
-		xxx.push({
-			tag:"OrgInfo",
-			parent:2,
-			id:7,
-			
-		});
-		xxx.push({
-			tag:"OrgName",
-			parent:7,
-			id:3,
-			printType:zzz.name
-		});
-		xxx.push({
-			tag:"OrgId",
-			parent:7,
-			id:9,
-			printType:zzz.org_id
-		});
-		xxx.push({
-			tag:"listingTypeInfo",
-			parent:2,
-			id:4,
-		});
-var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
-console.log(res)
+		zzz = JSON.parse(JSON.stringify(zzz));
+		xxx.push({tag:"Org",id:2,parent:1 });
+		xxx.push({tag:"OrgInfo",id:7,parent:2});
+		xxx.push({tag:"OrgName",printType:zzz.name,id:3,parent:7});
+		xxx.push({tag:"OrgId", printType:zzz.org_id,id:9,parent:7});
+		xxx.push({tag:"listingTypeInfo",id:4,parent:2});
+		// var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
+		// console.log(res)
 		for(var dd in zzz.listingType)
 		{
-			xxx.push({
-				tag:"listingType",
-				parent:4,
-				id:5,
-			});
-			xxx.push({
-				tag:"featuresName",
-				parent:5,
-				id:6,
-				printType:zzz.listingType[dd].listingName
-			});
+			xxx.push({tag:"listingType", parent:4, id:5, }); 
+			xxx.push({tag:"featuresName", parent:5, id:6, printType:zzz.listingType[dd].listingName }); 
 		}
 		});
 		cb(xxx);
