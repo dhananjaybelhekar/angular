@@ -1,3 +1,7 @@
+
+
+
+
 var mongoose = require("mongoose"),
 jsonxml = require('jsontoxml'),
 format = require('xml-formatter'),
@@ -9,10 +13,16 @@ mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
 //mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
 var fs = require('fs');
 var orgScgema = new mongoose.Schema({
-	personnel:Schema.Types.Mixed,
-	tag:Schema.Types.String,
-    children:[Schema.Types.Mixed],
+	// personnel:Schema.Types.Mixed,
+	// tag:Schema.Types.String,
+ //    children:[Schema.Types.Mixed],
+ 		"personnel": [{
+        "type": Schema.Types.ObjectId,
+        "ref": 'TXN_Personnel',
+    }],
 });
+
+
 var _DB={},
 	_QR={qr:{"directoryId" : {"_eval":"Id","value":"57189b3e24d8bc65f4123bbf"}},
 		qr1:{"_id" :{$in:[
@@ -34,9 +44,19 @@ var _DB={},
 	],
 };
 
-_DB.txn_organization = mongoose.model('TXN_Organization',orgScgema);
 
-_DB.txn_personnel= mongoose.model('TXN_Personnel',{});
+
+_DB.txn_personnel= mongoose.model('TXN_Personnel',new mongoose.Schema({
+	    "name": {
+        "prefix": String,
+        "first": String,
+        "middle": String,
+        "last": String,
+        "suffix": String
+    }
+
+}));
+_DB.txn_organization = mongoose.model('TXN_Organization',orgScgema);
 
 _DB.txn_temp= mongoose.model('TXN_Temp',new mongoose.Schema({
 
@@ -44,26 +64,47 @@ _DB.txn_temp= mongoose.model('TXN_Temp',new mongoose.Schema({
 
 function fun1(cb,d){
 	_DB.txn_organization.aggregate(evaluate(_QR.cfs)).exec(function(err,data){
-		
-		var xxx=[];
-		xxx.push({tag:"Sec",id:1,parent:0 }); 
+		 _DB.txn_organization.populate(data,
+		 	{
+		 		path: 'personnel', 
+		 		//sort:{"name.first": 1},
+		 		match: { deleted:false }
+		 	},(err1,data2)=>{
+		 	// console.log(data2[2]);
+				var xxx=[];
+				xxx.push({tag:"Sec",id:1,parent:0 }); 
+				data2.map((zzz)=>{
+				zzz = JSON.parse(JSON.stringify(zzz));
+				xxx.push({tag:"Org",id:2,parent:1 });
+				xxx.push({tag:"OrgInfo",id:7,parent:2});
+				xxx.push({tag:"ID",printType:zzz._id,id:13,parent:7});
+				xxx.push({tag:"OrgName",printType:zzz.name,id:3,parent:7});
+				xxx.push({tag:"OrgId", printType:zzz.org_id,id:9,parent:7});
+				xxx.push({tag:"listingTypeInfo",id:4,parent:2});
+				// var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
+				// console.log(res)
+				for(var dd in zzz.listingType)
+				{
+					xxx.push({tag:"listingType", parent:4, id:5, }); 
+					xxx.push({tag:"featuresName", parent:5, id:6, printType:zzz.listingType[dd].listingName }); 
+				}
+				xxx.push({tag:"keyPersonnelInfo",id:7,parent:2});
+				//console.log(jsonata("name").evaluate(_.cloneDeep(zzz.personnel))); 
+				//console.log(_.cloneDeep(zzz.personnel)); 				
+				for(var dd in zzz.personnel)
+				{
+				// console.log(zzz.personnel[dd]);
+					xxx.push({tag:"PersonnelInfo",  id:8, parent:7,}); 
+					xxx.push({tag:"employee_id",  id:12, parent:8, printType:zzz.personnel[dd].employee_id}); 
+					xxx.push({tag:"PersonneltitleMasterName",  id:11, parent:8, printType:zzz.personnel[dd].titleMasterName}); 
+					xxx.push({tag:"PersonnelFirstName",  id:9, parent:8, printType:zzz.personnel[dd].name.first }); 
+					xxx.push({tag:"PersonnelLastName",  id:10, parent:8, printType:zzz.personnel[dd].name.last }); 
+				}
 
-		data.map((zzz)=>{
-		zzz = JSON.parse(JSON.stringify(zzz));
-		xxx.push({tag:"Org",id:2,parent:1 });
-		xxx.push({tag:"OrgInfo",id:7,parent:2});
-		xxx.push({tag:"OrgName",printType:zzz.name,id:3,parent:7});
-		xxx.push({tag:"OrgId", printType:zzz.org_id,id:9,parent:7});
-		xxx.push({tag:"listingTypeInfo",id:4,parent:2});
-		// var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
-		// console.log(res)
-		for(var dd in zzz.listingType)
-		{
-			xxx.push({tag:"listingType", parent:4, id:5, }); 
-			xxx.push({tag:"featuresName", parent:5, id:6, printType:zzz.listingType[dd].listingName }); 
-		}
-		});
-		cb(xxx);
+				});
+				cb(xxx); 	
+		 });
+		
 	})
 }
 function run(cb){
@@ -151,7 +192,6 @@ function evaluate(object) {
                     object = d.toISOString();
                     break;
                 }
-
         }
     }
     return object;
