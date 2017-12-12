@@ -41,6 +41,8 @@ var _DB={},
 	],
 };
 
+
+
 _DB.txn_personnel= mongoose.model('TXN_Personnel',new mongoose.Schema({
 	    "name": {
         "prefix": String,
@@ -67,12 +69,8 @@ function fun1(cb,d){
 		 		match: { deleted:false }
 		 	},(err1,data2)=>{
 
-    fs.appendFile( 'per.txt',JSON.stringify(data2[2],null,2), function(err) {
-        if (err) throw reject(err);
-      });
-
 				var xxx=[];
-				xxx.push({name:"Sec",attrs:{mood:'sad'},id:1,parent:0 }); 
+				xxx.push({name:"Sec",id:1,parent:0 }); 
 				data2.map((zzz)=>{
 				zzz = JSON.parse(JSON.stringify(zzz));
 				xxx.push({name:"Org",id:2,parent:1 });
