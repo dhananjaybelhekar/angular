@@ -6,8 +6,8 @@ ProgressBar = require('progress'),
 jsonata = require("jsonata"),
 cleanDeep = require('clean-deep'),
 Schema = mongoose.Schema;
-mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
-//mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
+//mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
+mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
 var fs = require('fs');
 var orgScgema = new mongoose.Schema({
 	// personnel:Schema.Types.Mixed,
@@ -108,7 +108,9 @@ function fun1(cb,d){
 	})
 }
 function run(cb){
+	console.log("Start....");
 	fun1((data)=>{
+		console.log("Fun1....");
 		cb(data);
 	},[])
 }
