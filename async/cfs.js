@@ -105,15 +105,16 @@ function fun1(cb,d){
 		 _DB.txn_organization.populate(data,
 		 	{
 		 		path: 'data.Org', 
-		 		//sort:{"name.first": 1},
 		 		select:{name:1,org_id:1},
-		 		match: { deleted:false }
+		 		match: { 
+		 	   "deletedFlag" : true, 
+    "active" : true, 
+    "deleted" : false
+},
+    				sort:{name:1}
 		 	},(err1,data2)=>{
 
-
-
 				var xxx=[];
-				
 				xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
 				xxx.push({name:"Sec",id:2,parent:1 }); 
 				
@@ -126,57 +127,17 @@ function fun1(cb,d){
 						var temp = JSON.parse(JSON.stringify(zzz.data[org]));
 						xxx.push({name:"SpecificationType",id:5,parent:3}); 	
 						xxx.push({name:"SpecificationTypeName",id:6,parent:5,text:temp.specificationType }); 	
-    // fs.appendFile( 'per.txt',JSON.stringify(temp,null,2), function(err) {
-    //     if (err) throw reject(err);
-    //   });
-
-
-						 xxx.push({name:"Org",id:7,parent:3}); 	
-						// 
+						xxx.push({name:"OrgInfo",id:7,parent:5}); 	
 						 for(var orgOfOrg in temp.Org)
 						{
-							
-							xxx.push({name:"OrganizationID",id:8,parent:7,text:temp.Org[orgOfOrg].org_id }); 	
-							xxx.push({name:"OrganizationName",id:9,parent:7,text:temp.Org[orgOfOrg].name}); 	
+							xxx.push({name:"Org",id:8,parent:7}); 	
+							xxx.push({name:"OrganizationID",id:9,parent:8,text:temp.Org[orgOfOrg].org_id }); 	
+							xxx.push({name:"OrganizationName",id:10,parent:8,text:temp.Org[orgOfOrg].name}); 	
 						}
 						
 					}
 
 				});
-				
-
-				
-			// 	data2.map((zzz)=>{
-			// 	zzz = JSON.parse(JSON.stringify(zzz));
-			// 	xxx.push({name:"Org",id:2,parent:1 });
-			// 	xxx.push({name:"OrgInfo",id:7,parent:2});
-			// //	xxx.push({name:"ID",text:zzz._id,id:13,parent:7});
-   //              xxx.push({name:"OrgId", text:zzz.org_id,id:9,parent:7});
-			// 	xxx.push({name:"OrgName",text:zzz.name,id:3,parent:7});
-				
-			// 	xxx.push({name:"listingTypeInfo",id:4,parent:2});
-			// 	// var res = jsonata("listingType[listingName='Foreign Banks']").evaluate(zzz); 
-			// 	// console.log(res)
-
-			// 	for(var dd in zzz.listingType)
-			// 	{
-			// 		xxx.push({name:"listingType", parent:4, id:5, }); 
-			// 		xxx.push({name:"featuresName", parent:5, id:6, text:zzz.listingType[dd].listingName }); 
-			// 	}
-			// 	xxx.push({name:"keyPersonnelInfo",id:7,parent:2});
-			// 	//console.log(jsonata("name").evaluate(_.cloneDeep(zzz.personnel))); 
-			// 	//console.log(_.cloneDeep(zzz.personnel)); 				
-			// 	for(var dd in zzz.personnel)
-			// 	{
-			// 	// console.log(zzz.personnel[dd]);
-			// 		xxx.push({name:"PersonnelInfo",  id:8, parent:7,}); 
-			// 		xxx.push({name:"employee_id",  id:12, parent:8, text:zzz.personnel[dd].employee_id}); 
-			// 		xxx.push({name:"PersonneltitleMasterName",  id:11, parent:8, text:zzz.personnel[dd].titleMasterName}); 
-			// 		xxx.push({name:"PersonnelFirstName",  id:9, parent:8, text:zzz.personnel[dd].name.first }); 
-			// 		xxx.push({name:"PersonnelLastName",  id:10, parent:8, text:zzz.personnel[dd].name.last }); 
-			// 	}
-
-			// 	});
 				cb(xxx); 	
 		 });
 		
