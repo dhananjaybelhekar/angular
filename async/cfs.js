@@ -115,10 +115,11 @@ function fun1(cb,d){
 		 	},(err1,data2)=>{
 
 				var xxx=[];
-				xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
-				xxx.push({name:"Sec",id:2,parent:1 }); 
 				
+				  xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
+        xxx.push({name:"Sec",id:2,parent:1 }); 
 				data2.map((zzz)=>{
+        
 					xxx.push({name:"Chapter",id:3,parent:2}); 	
 					xxx.push({name:"ChapterName",id:4,parent:3,text:zzz._id }); 	
 					

@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "express": "^4.16.1",
-    "loadash": "^1.0.0"
+    "json2csv": "^3.11.5",
+    "jsonexport": "^2.0.11",
+    "loadash": "^1.0.0",
+    "mongoose": "^4.13.7",
+    "mongoose-aggregate-paginate-allowdiskuse": "^1.0.1"
   }
 }

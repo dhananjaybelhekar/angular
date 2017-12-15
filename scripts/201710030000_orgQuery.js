@@ -12,7 +12,10 @@ db.txn_organizations.aggregate(
 
     // Stage 2
     {
-      $unwind: "$address"
+      $unwind: {
+            path: "$address",
+            preserveNullAndEmptyArrays:true
+      }
     },
 
     // Stage 3
