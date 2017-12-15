@@ -65,10 +65,18 @@ function fun1(callback){
     {
       $match: {
       "directoryId":new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3"),
-      "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb")
+      "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb"),
+      "classificationCode":{$in:[
+        new mongoose.Types.ObjectId("57726c33c19c305dc5b1b352"),
+        new mongoose.Types.ObjectId("57726c33c19c305dc5b1b353")]}
+      
       }
     },
-
+    {
+      $sort: { 
+          "orgIdNumber" : 1
+      }
+    },
     // Stage 2
     {
       $unwind: {
@@ -80,7 +88,13 @@ function fun1(callback){
     // Stage 3
     {
       $match: {
-      "address.addressType":{$nin:[new mongoose.Types.ObjectId("57726e42c19c3451796ea55f"),new mongoose.Types.ObjectId("57726e42c19c3451796ea562")]}
+      "address.addressType":
+      {
+        $in:
+        [
+        new mongoose.Types.ObjectId("57726e42c19c3451796ea55f"),
+    //    new mongoose.Types.ObjectId("57726e42c19c3451796ea562")
+        ]}
       }
     },
 
@@ -153,6 +167,7 @@ function fun1(callback){
  console.log("count_",count);
 var options = { page : count, limit : 5000, allowDiskUse: true }
 org1.aggregatePaginate(aggregate, options, function(err, results, pageCount, count) {
+  console.log("*************************************************");
   console.log("pageCount_",pageCount);
   if(err) 
   {
@@ -184,7 +199,17 @@ function result(err, result) {
          "address.street2",
          "address.cityName",
          "address.stateAbbreviation",
-         "address.zip",
+    //     "address.zip",
+             {
+      label: 'zip', 
+      value: function(row, field, data) {
+          var _data =JSON.parse(JSON.stringify(row));
+          return ((_data.address) && (_data.address.zip)) ?('zip:-'+_data.address.zip):"";
+        //return JSON.parse(JSON.stringify(row.status)).codeValue;
+      },
+      default: 'NULL',
+      stringify: true 
+    },
          "address.countyName",
          "parentId.classificationCodeName",
          "parentId.org_id",
@@ -204,12 +229,12 @@ function result(err, result) {
     var csv = json2csv({ data: result, fields: fields }); 
  //     fs.writeFile('file2.csv', csv, function(err) {
 //  fs.appendFile('file3.csv', csv, function(err) {
-     fs.appendFile('20171214.csv', csv, function(err) {
+     fs.appendFile('20171215.csv', csv, function(err) {
         if (err) throw err;
         else
         {
           count = count + 1;
-          if(count <= 28)
+          if(count <= 1)
           show();          
         else 
           console.log("done");
