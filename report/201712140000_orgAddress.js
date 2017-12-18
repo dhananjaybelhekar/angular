@@ -68,9 +68,10 @@ function fun1(callback){
       "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb"),
       "classificationCode":{$in:[
         new mongoose.Types.ObjectId("57726c33c19c305dc5b1b352"),
-        new mongoose.Types.ObjectId("57726c33c19c305dc5b1b353")]}
-      
+        new mongoose.Types.ObjectId("57726c33c19c305dc5b1b353")]},
+        "addr2":true
       }
+
     },
     {
       $sort: { 

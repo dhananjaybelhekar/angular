@@ -11,20 +11,20 @@ db.txn_organizations.find({
   }).forEach(function(data){
     	var temp = true;
 	data.address.forEach(function(bdata){
-	  	if(bdata.addressType.toString() === ObjectId("576286d0c19cef300bc720e5").toString())
+	  	if(bdata.addressType.toString() == ObjectId("576286d0c19cef300bc720e5").toString())
 	  	{
 			temp=false;
 		}
-		if(bdata.addressType === ObjectId("576286d0c19cef300bc720e6").toString())
+		if(bdata.addressType.toString() == ObjectId("576286d0c19cef300bc720e6").toString())
 		{
 			temp=false;
 		}
-		if(bdata.addressType === ObjectId("57726e42c19c3451796ea561").toString())
+		if(bdata.addressType.toString() == ObjectId("57726e42c19c3451796ea561").toString())
 		{
 			temp=false;
 		}
 	});
 
-		data.addr2=temp;
+	data.addr2=temp;
 	db.txn_organizations.save(data);
 })
