@@ -11,7 +11,7 @@ var mongooseAggregatePaginate = require('mongoose-aggregate-paginate-allowdiskus
 
 var count=1;
 //mongoose.connect('mongodb://192.168.10.178/OCD_XML');
-mongoose.connect('mongodb://localhost/tw-prod-20171214');
+mongoose.connect('mongodb://192.168.10.82/tw-prod-20171216');
 //mongoose.connect('mongodb://192.168.10.121/tw-prod-20170928');
 
 
@@ -94,7 +94,7 @@ function fun1(callback){
         $in:
         [
         new mongoose.Types.ObjectId("57726e42c19c3451796ea55f"),
-    //    new mongoose.Types.ObjectId("57726e42c19c3451796ea562")
+        new mongoose.Types.ObjectId("57726e42c19c3451796ea562")
         ]}
       }
     },
@@ -117,7 +117,10 @@ function fun1(callback){
          "address.stateAbbreviation":1,
          "address.zip":1,
          "address.countyName":1,
-         "parentId":1
+         "parentId":1,
+          "abbrevationName":1,
+         "EINumber":1,
+         "dioProvinceName":1
        }
     },
 
@@ -141,8 +144,8 @@ function fun1(callback){
       $project: {
          "status":1,
          "orgIdNumber":1,
-         "classificationCodeName":1,
          "name":1,
+         "classificationCodeName":1,
          "address.addressType":1,
          "address.sequenceNo":1,
          "address.mailingIndex":1,
@@ -156,7 +159,10 @@ function fun1(callback){
          "address.countyName":1,
          "parentId.classificationCodeName":1,
          "parentId.org_id":1,
-         "parentId.name":1
+         "parentId.name":1,
+         "abbrevationName":1,
+         "EINumber":1,
+         "dioProvinceName":1
          }
     }
   ]
@@ -189,10 +195,15 @@ function result(err, result) {
     var fields = [
          "status",
          "orgIdNumber",
-         "classificationCodeName",
          "name",
-         "address.addressType",
+         
+        "abbrevationName",
+        "EINumber",
+         "classificationCodeName",
+         
          "address.sequenceNo",
+         "address.addressType",
+         
          "address.mailingIndex",
          "address.header",
          "address.organizationName",
@@ -212,9 +223,12 @@ function result(err, result) {
       stringify: true 
     },
          "address.countyName",
-         "parentId.classificationCodeName",
+         "dioProvinceName",
          "parentId.org_id",
-         "parentId.name"
+         "parentId.classificationCodeName",
+         "parentId.name",
+      
+
     // {
     //   label: 'status.codeValue', 
     //   value: function(row, field, data) {

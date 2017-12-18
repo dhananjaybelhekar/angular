@@ -6,8 +6,8 @@ ProgressBar = require('progress'),
 jsonata = require("jsonata"),
 cleanDeep = require('clean-deep'),
 Schema = mongoose.Schema;
-mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
-//mongoose.connect("mongodb://localhost/tw-UAT-20161212", { useMongoClient: true });
+//mongoose.connect("mongodb://192.168.10.178/OCD_XML", { useMongoClient: true });
+mongoose.connect("mongodb://192.168.10.82/tw-prod-20171216", { useMongoClient: true });
 var fs = require('fs');
 var orgScgema = new mongoose.Schema({
 	// personnel:Schema.Types.Mixed,
@@ -105,39 +105,29 @@ function fun1(cb,d){
 		 _DB.txn_organization.populate(data,
 		 	{
 		 		path: 'data.Org', 
+		 		//sort:{"name.first": 1},
 		 		select:{name:1,org_id:1},
-		 		match: { 
-		 	   "deletedFlag" : true, 
-    "active" : true, 
-    "deleted" : false
-},
-    				sort:{name:1}
+		 		match: { deleted:false }
 		 	},(err1,data2)=>{
-
-				var xxx=[];
-				
-				  xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
-        xxx.push({name:"Sec",id:2,parent:1 }); 
+				var xxx=[];	
+				xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
+				xxx.push({name:"Sec",id:2,parent:1 }); 
 				data2.map((zzz)=>{
-        
 					xxx.push({name:"Chapter",id:3,parent:2}); 	
 					xxx.push({name:"ChapterName",id:4,parent:3,text:zzz._id }); 	
-					
 					for(var org in zzz.data)
 					{
 						var temp = JSON.parse(JSON.stringify(zzz.data[org]));
 						xxx.push({name:"SpecificationType",id:5,parent:3}); 	
 						xxx.push({name:"SpecificationTypeName",id:6,parent:5,text:temp.specificationType }); 	
-						xxx.push({name:"OrgInfo",id:7,parent:5}); 	
-						 for(var orgOfOrg in temp.Org)
-						{
+						xxx.push({name:"OrgInfo",id:7,parent:3}); 		
+						for(var orgOfOrg in temp.Org)
+							{
 							xxx.push({name:"Org",id:8,parent:7}); 	
 							xxx.push({name:"OrganizationID",id:9,parent:8,text:temp.Org[orgOfOrg].org_id }); 	
 							xxx.push({name:"OrganizationName",id:10,parent:8,text:temp.Org[orgOfOrg].name}); 	
-						}
-						
+							}
 					}
-
 				});
 				cb(xxx); 	
 		 });
