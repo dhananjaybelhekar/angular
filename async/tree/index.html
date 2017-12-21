@@ -1,0 +1,76 @@
+<script>
+  function show(structure,newData,data)
+{
+  for(var i in structure)
+  {
+  if(structure[i].value)
+  {
+    newData.push({"text":structure[i].name,value:data[structure[i].key]});  
+    
+    
+  }
+  
+  else
+  newData.push({"text":structure[i].name});
+
+  if((structure[i].node != undefined) && (structure[i].key != undefined))
+  {
+      for(var Bdata in data[structure[i].key])
+      {
+        newData[i]['node']=[];
+        show(structure[i].node,newData[i]['node'],data[i][structure[i].key][Bdata]);
+      }
+    //newData[i]['node']=[];
+    //show(structure[i].node,newData[i]['node'],data[i][structure[i].key]);
+    //show(structure[i].node,newData[i]['node'],data[i][structure[i]]);
+  }else
+    {
+      newData[i]['node']=[];
+      show(structure[i].node,newData[i]['node'],data);
+    }
+  }
+  return newData;
+}
+var data=[{name:[{fname:"ffname",lname:"llname"},{fname:"dhananjay",lname:"belhekar"}]}];
+var d= 
+[
+  {
+    "name": "name",
+
+    node:[
+    {
+    name:"nameInfo",
+        "key":"name",
+    "node": [
+          {
+            "name": "fname",
+            "key":"fname",
+            value:true
+
+          },
+          {
+            "name": "lname",
+            "key":'lname',
+            value:true
+          }
+        ]}
+    ]
+  }
+];
+console.log(d);
+console.log(show(d,[],data));
+/*
+for(var ddata in data)
+    {
+        
+        newData.push(
+          {
+            "text":structure[i].name,
+            "value":data[ddata][structure[i].key]
+          });  
+    }
+    
+*/
+
+</script>
+
