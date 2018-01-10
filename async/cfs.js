@@ -110,7 +110,7 @@ function fun1(cb,d){
 		 		match: { deleted:false }
 		 	},(err1,data2)=>{
 				var xxx=[];	
-				xxx.push({name:"component",attrs:{type:'CFS-Regular'},id:1,parent:0 }); 
+				xxx.push({name:"component",attrs:{type:'CFS-Regular'},id: 1,parent:0 }); 
 				xxx.push({name:"Sec",id:2,parent:1 }); 
 				data2.map((zzz)=>{
 					xxx.push({name:"Chapter",id:3,parent:2}); 	
@@ -199,3 +199,29 @@ run(function(data){
         
     })
 })
+
+
+
+function show(data,vdata)
+{
+  for(var i in data)
+  {
+  console.log(data[i].name);
+    vdata.push({"text":data[i].name});
+  if(data[i].node)
+  {
+    vdata[i]['node']=[];
+    show(data[i].node,vdata[i]['node'])
+  }
+  }
+  return vdata;
+}
+
+var d= 
+  [{name:123},{name:456},
+  {name:789,node:[{name:"node123"},{name:"node456",node:[{name:"node45"},{name:"node46"}]}]}];
+console.log(d);
+console.log(show(d,[]));
+
+
+

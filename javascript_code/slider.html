@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  </head>
+
+  <body>
+<div id="slider"></div>
+<script>
+    var x = document.getElementById("slider");
+	var ctr=0;
+	var arr=[
+	"https://pbs.twimg.com/profile_images/839721704163155970/LI_TRk1z_400x400.jpg",
+	"http://pukdigital.com/wp-content/uploads/2017/10/googles-new-logo-5078286822539264.3-hp2x.gif",
+	"https://simply-communicate.com/wp-content/uploads/2013/11/featured.png"];
+	setInterval(function(){
+		if(ctr<arr.length - 1)
+	  	ctr+=1;
+	   else
+	   ctr=0;
+	    x.innerHTML="<img src="+arr[ctr]+" width='100px' height='100px'/>";
+	   console.log(x.innerHTML);
+	  },3000)
+    </script>
+  </body>
+</html>

@@ -64,14 +64,14 @@ function fun1(callback){
     // Stage 1
     {
       $match: {
-      "directoryId":new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3"),
+    "directoryId":new mongoose.Types.ObjectId("57189cd924d8bc65f4123bc3"),
       "status" : new mongoose.Types.ObjectId("57283b4214dde6a43b46a7bb"),
       "classificationCode":{$in:[
         new mongoose.Types.ObjectId("57726c33c19c305dc5b1b352"),
         new mongoose.Types.ObjectId("57726c33c19c305dc5b1b353")]},
-        "address":null
+         $or: [ { "address": { $size: 0 } }, 
+         { "address": null } ] 
       }
-
     },
     {
       $sort: { 
